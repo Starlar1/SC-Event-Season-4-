@@ -827,12 +827,12 @@ menuButtons.addEventListener('click', (e) => {
 
 // Random Loading Images Array
 const loadingImages = [
-    "https://i.ibb.co/zTz4HWKV/Grid-Art-20251201-174500600.jpg",
-    "https://i.ibb.co/tS8x1NN/Grid-Art-20251201-174440283.jpg",
-    "https://i.ibb.co/5WHvk572/Grid-Art-20251201-174349581.jpg",
-    "https://i.ibb.co/x8FNdDqn/Grid-Art-20251201-173834315.jpg",
-    "https://i.ibb.co/fzYkY1Zg/Grid-Art-20251201-173744578.jpg",
-    "https://i.ibb.co/fV9d8pvc/Grid-Art-20251201-173622305.jpg",
+    "https://i.ibb.co/LzsfB2xr/Grid-Art-20260120-165656645.jpg",
+    "https://i.ibb.co/0yWRJF7d/Grid-Art-20260120-165749337.jpg",
+    "https://i.ibb.co/5gd8vjWX/Grid-Art-20260120-165734305.jpg",
+    "https://i.ibb.co/Kcfb3hCg/Grid-Art-20260120-170351346.jpg",
+    "https://i.ibb.co/ksLz0d62/Grid-Art-20260120-170409969.jpg",
+    "https://i.ibb.co/cSQhvyYn/Grid-Art-20260120-170424307.jpg",
     "https://i.ibb.co/NdFnnmWM/Grid-Art-20251201-173705204.jpg",
     "https://i.ibb.co/5gW6qxFM/Grid-Art-20251201-173540051.jpg"
 ];
@@ -2181,7 +2181,7 @@ const taskScreenHTML = `
                     <h3 class="task-name">နာရီအလိုက် Token</h3>
                     <p class="task-reward">
                         <img src="https://i.ibb.co/YTbp2Z70/Grid-Art-20251201-170338013.png" class="token-icon-tiny">
-                        <span>+3 Token</span>
+                        <span>+1 Token</span>
                     </p>
                 </div>
                 <div class="task-timer" id="three-hour-timer">
@@ -2221,7 +2221,7 @@ const taskScreenHTML = `
         
         <div class="task-section">
             <h2 class="section-title">Telegram Channel Tasks</h2>
-            <p class="task-subtitle">Channel ဝင်ပြီး 5 Token ရယူပါ</p>
+            <p class="task-subtitle">Channel ဝင်ပြီး 3 Token ရယူပါ</p>
             
             <div class="task-list" id="telegram-tasks">
                 <!-- Telegram tasks will be loaded here -->
@@ -2230,7 +2230,7 @@ const taskScreenHTML = `
         
         <div class="task-section">
             <h2 class="section-title">YouTube Tasks</h2>
-            <p class="task-subtitle">Subscribe လုပ်ပြီး 5 Token ရယူပါ</p>
+            <p class="task-subtitle">Subscribe လုပ်ပြီး 3 Token ရယူပါ</p>
             
             <div class="task-list" id="youtube-tasks">
                 <!-- YouTube tasks will be loaded here -->
@@ -2891,7 +2891,7 @@ const tasksData = {
             description: "သူငယ်ချင်းများ ကို 5 ခါ Share ပါ",
             shareMessage: "MLBB Diamonds များကိုအခမဲ့ရယူလိုက်ပါ\nhttps://starlar1.github.io/SC-Event-Season-3-Project-Next/",
             requiredCount: 5,
-            reward: 5,
+            reward: 3,
             completedCount: 0
         },
         { 
@@ -2899,7 +2899,7 @@ const tasksData = {
             description: "သူငယ်ချင်းများ ကို 10 ခါ Share ပါ",
             shareMessage: "MLBB Diamonds များကိုအခမဲ့ရယူလိုက်ပါ\nhttps://starlar1.github.io/SC-Event-Season-3-Project-Next/",
             requiredCount: 10,
-            reward: 8,
+            reward: 6,
             completedCount: 0
         }
     ]
@@ -3420,7 +3420,7 @@ function updateTimer() {
         timeRemaining.textContent = 'Claim Now!';
         timerProgress.style.width = '100%';
         threeHourClaim.disabled = false;
-        threeHourClaim.querySelector('.btn-text').textContent = 'Claim 3 Token';
+        threeHourClaim.querySelector('.btn-text').textContent = 'Claim 1 Token';
     } else {
         // Still time remaining
         const hours = Math.floor(timeLeft / (1000 * 60 * 60));
@@ -3529,7 +3529,7 @@ const mainExchangeScreenHTML = `
     position: absolute;
     width: 100%;
     height: 100%;
-    background: url("https://i.ibb.co/d0DzjWf2/Grid-Art-20260120-162202059.jpg") center no-repeat;
+    background: url("https://i.ibb.co/d4wR1xGT/In-Shot-20260120-164935680.jpg") center no-repeat;
     background-size: cover;
     filter: brightness(0.9);
 }
@@ -5217,9 +5217,9 @@ let resultTokenCount, nextOpenTime, giftPopupCloseBtn;
 
 // Gift rewards
 const giftRewards = [
-    { token: 1, image: "https://i.ibb.co/YTbp2Z70/Grid-Art-20251201-170338013.png" },
-    { token: 2, image: "https://i.ibb.co/YTbp2Z70/Grid-Art-20251201-170338013.png" },
-    { token: 3, image: "https://i.ibb.co/YTbp2Z70/Grid-Art-20251201-170338013.png" }
+    { token: 1, image: "https://i.ibb.co/m5T74L84/Grid-Art-20260120-165031094.png" },
+    { token: 2, image: "https://i.ibb.co/m5T74L84/Grid-Art-20260120-165031094.png" },
+    { token: 3, image: "https://i.ibb.co/m5T74L84/Grid-Art-20260120-165031094.png" }
 ];
 
 // 5-hour cooldown in milliseconds
