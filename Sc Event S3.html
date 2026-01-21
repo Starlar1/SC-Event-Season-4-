@@ -1428,7 +1428,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Supabase 4 Servers
+// ===== UPDATED SUPABASE SERVERS (4 + 2 NEW SERVERS) =====
 const SUPABASE_SERVERS = [
     {
         id: 1,
@@ -1452,6 +1452,19 @@ const SUPABASE_SERVERS = [
         id: 4,
         url: "https://hcfimtxbgqumfiqsbjwz.supabase.co",
         key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjZmltdHhiZ3F1bWZpcXNiand6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwMjg4ODMsImV4cCI6MjA4MTYwNDg4M30.CID5IGMpZhL8D5hczVZ4JOxL2vEz6RiYQzN5bh7jmfY",
+        maxUsers: 100
+    },
+    // ===== NEW SERVERS 5 & 6 =====
+    {
+        id: 5,
+        url: "https://olxbftzmfjbvrwajhwnr.supabase.co",
+        key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9seGJmdHptZmpidnJ3YWpod25yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwMjk2NTMsImV4cCI6MjA4MTYwNTY1M30.Ik5HssVnHVwYfHd_lKvbc_8ZTG-3LJJvY2gKzlBKl5s",
+        maxUsers: 100
+    },
+    {
+        id: 6,
+        url: "https://ofwbmyetsgrlksrpujju.supabase.co",
+        key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9md2JteWV0c2dybGtzcnB1amp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwMjk2NTcsImV4cCI6MjA4MTYwNTY1N30.rJeWIBcrzA5hKranxmJBv6ZljMPPjRvqkUdBCVnHRHM",
         maxUsers: 100
     }
 ];
@@ -7005,7 +7018,56 @@ const rankSystemHTML = `
                         </div>
                     </div>
                 </div>
+
+        <!-- ===== SERVER 5 ===== -->
+    <div class="server-card" data-server="4">
+        <div class="server-card-inner">
+            <div class="server-icon-container">
+                <div class="server-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#1abc9c">
+                        <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                    </svg>
+                </div>
             </div>
+            <div class="server-info">
+                <div class="server-name">Server 5</div>
+                <div class="server-user-count">
+                    <span class="loading-text">Loading...</span>
+                </div>
+            </div>
+            <div class="server-select-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== SERVER 6 ===== -->
+    <div class="server-card" data-server="5">
+        <div class="server-card-inner">
+            <div class="server-icon-container">
+                <div class="server-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#e67e22">
+                        <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="server-info">
+                <div class="server-name">Server 6</div>
+                <div class="server-user-count">
+                    <span class="loading-text">Loading...</span>
+                </div>
+            </div>
+            <div class="server-select-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+            
         </div>
     </div>
 </div>
@@ -7619,7 +7681,8 @@ const rankSystemHTML = `
 </style>
 `;
 
-// Rank System Variables
+
+     // Rank System Variables
 let rankSystemInitialized = false;
 let activeServerIndex = 0;
 let activeRankType = 'coins';
@@ -7671,7 +7734,7 @@ function setupRankEvents() {
             }, { passive: true });
         }
         
-        // Server cards
+        // Server cards (NOW 6 CARDS)
         const serverCards = document.querySelectorAll('.server-card');
         serverCards.forEach(card => {
             card.addEventListener('click', function(e) {
@@ -7682,7 +7745,7 @@ function setupRankEvents() {
             }, { passive: true });
         });
     }, 200);
-    
+
     // Rank display events
     setTimeout(() => {
         // Back button
@@ -7839,10 +7902,13 @@ function hideRankDisplayScreen() {
     showRankServerScreen();
 }
 
-// Load server user counts (only when rank button clicked)
+// Load server user counts for 6 servers (only when rank button clicked)
 async function loadServerUserCounts() {
     try {
-        for (let i = 0; i < 4; i++) {
+        const serverCards = document.querySelectorAll('.server-card');
+        
+        // Load counts for all 6 servers
+        for (let i = 0; i < 6; i++) { // CHANGED: 6 servers
             try {
                 const supabaseClient = getSupabaseClient(i);
                 const { count, error } = await supabaseClient
@@ -7871,6 +7937,18 @@ function updateServerUserCount(serverIndex, count) {
         const userCountElement = serverCards[serverIndex].querySelector('.server-user-count');
         if (userCountElement) {
             userCountElement.textContent = `${count} User${count !== 1 ? 's' : ''}`;
+            
+            // Add color coding based on user count
+            if (count >= 100) {
+                userCountElement.style.color = '#ff6b6b';
+                userCountElement.style.fontWeight = 'bold';
+            } else if (count >= 80) {
+                userCountElement.style.color = '#f39c12';
+            } else if (count >= 50) {
+                userCountElement.style.color = '#f1c40f';
+            } else {
+                userCountElement.style.color = '#2ecc71';
+            }
         }
     }
 }
@@ -7898,7 +7976,7 @@ async function loadServerRankings(serverIndex, rankType = 'coins') {
     if (loadMoreContainer) loadMoreContainer.style.display = 'none';
     
     try {
-        // Get Supabase client
+        // Get Supabase client for selected server
         const supabaseClient = getSupabaseClient(serverIndex);
         
         // Determine order field based on rank type
@@ -7916,19 +7994,31 @@ async function loadServerRankings(serverIndex, rankType = 'coins') {
             isLoading = false;
             return;
         }
-        
+
         // Hide loading
         if (loading) loading.style.display = 'none';
         
         if (error) {
-            console.error('Error loading rankings:', error);
-            if (empty) empty.style.display = 'flex';
+            console.error(`Error loading rankings from server ${serverIndex + 1}:`, error);
+            if (empty) {
+                empty.style.display = 'flex';
+                const emptyText = empty.querySelector('.empty-text');
+                if (emptyText) {
+                    emptyText.textContent = `Error loading Server ${serverIndex + 1} rankings`;
+                }
+            }
             isLoading = false;
             return;
         }
         
         if (!users || users.length === 0) {
-            if (empty) empty.style.display = 'flex';
+            if (empty) {
+                empty.style.display = 'flex';
+                const emptyText = empty.querySelector('.empty-text');
+                if (emptyText) {
+                    emptyText.textContent = `No rankings available on Server ${serverIndex + 1}`;
+                }
+            }
             isLoading = false;
             return;
         }
@@ -7951,7 +8041,13 @@ async function loadServerRankings(serverIndex, rankType = 'coins') {
         } else {
             console.error('Error loading rankings:', error);
             if (loading) loading.style.display = 'none';
-            if (empty) empty.style.display = 'flex';
+            if (empty) {
+                empty.style.display = 'flex';
+                const emptyText = empty.querySelector('.empty-text');
+                if (emptyText) {
+                    emptyText.textContent = 'Error loading rankings';
+                }
+            }
         }
     }
     
@@ -7972,7 +8068,7 @@ async function loadMoreRankings() {
     }
     
     try {
-        // Get Supabase client
+        // Get Supabase client for active server
         const supabaseClient = getSupabaseClient(activeServerIndex);
         
         // Determine order field based on rank type
@@ -8010,7 +8106,7 @@ async function loadMoreRankings() {
         console.error('Error loading more rankings:', error);
         hasMoreUsers = false;
     }
-    
+
     // Re-enable load more button
     if (loadMoreBtn) {
         loadMoreBtn.disabled = false;
@@ -8068,7 +8164,7 @@ function createRankItem(user, position, rankType) {
         <div class="rank-profile">
             <div class="profile-circle">
                 ${user.profile_image 
-                    ? `<img src="${user.profile_image}" alt="${user.user_name || 'User'}">`
+                    ? `<img src="${user.profile_image}" alt="${user.user_name || 'User'}" loading="lazy">`
                     : `<div class="initials">${initials}</div>`
                 }
             </div>
@@ -8090,8 +8186,12 @@ function createRankItem(user, position, rankType) {
 // Initialize rank system when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initializeRankSystem, 100);
-});
+});           
+    
 
+        
+            
+        
 
 // ===== INDESTRUCTIBLE LOADING CIRCLE =====
 (function() {
