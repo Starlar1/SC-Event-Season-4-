@@ -1428,7 +1428,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// ===== UPDATED SUPABASE SERVERS (4 + 2 NEW SERVERS) =====
+// ===== UPDATED SUPABASE SERVERS (6 + 2 NEW SERVERS = 8 TOTAL) =====
 const SUPABASE_SERVERS = [
     {
         id: 1,
@@ -1454,7 +1454,6 @@ const SUPABASE_SERVERS = [
         key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjZmltdHhiZ3F1bWZpcXNiand6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwMjg4ODMsImV4cCI6MjA4MTYwNDg4M30.CID5IGMpZhL8D5hczVZ4JOxL2vEz6RiYQzN5bh7jmfY",
         maxUsers: 100
     },
-    // ===== NEW SERVERS 5 & 6 =====
     {
         id: 5,
         url: "https://olxbftzmfjbvrwajhwnr.supabase.co",
@@ -1465,6 +1464,19 @@ const SUPABASE_SERVERS = [
         id: 6,
         url: "https://ofwbmyetsgrlksrpujju.supabase.co",
         key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9md2JteWV0c2dybGtzcnB1amp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwMjk2NTcsImV4cCI6MjA4MTYwNTY1N30.rJeWIBcrzA5hKranxmJBv6ZljMPPjRvqkUdBCVnHRHM",
+        maxUsers: 100
+    },
+    // ===== NEW SERVERS 7 & 8 =====
+    {
+        id: 7,
+        url: "https://qqdsrkmguasrhjttmkfl.supabase.co",
+        key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxZHNya21ndWFzcmhqdHRta2ZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5Nzk4MjcsImV4cCI6MjA4NDU1NTgyN30.F5WWIoe2ZaL8Auok1aWzUXjgc7FRNgxMM4K_v3ZURFg",
+        maxUsers: 100
+    },
+    {
+        id: 8,
+        url: "https://qwmcoghtkszrveequkrq.supabase.co",
+        key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3bWNvZ2h0a3N6cnZlZXF1a3JxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5ODAwNzYsImV4cCI6MjA4NDU1NjA3Nn0.RNir-Su2ZTsnBob-T9xglftvhS8hjYpgdxONl3Lceuo",
         maxUsers: 100
     }
 ];
@@ -7066,6 +7078,55 @@ const rankSystemHTML = `
             </div>
         </div>
     </div>
+
+        <!-- ===== SERVER 7 ===== -->
+    <div class="server-card" data-server="6">
+        <div class="server-card-inner">
+            <div class="server-icon-container">
+                <div class="server-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#9b59b6">
+                        <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="server-info">
+                <div class="server-name">Server 7</div>
+                <div class="server-user-count">
+                    <span class="loading-text">Loading...</span>
+                </div>
+            </div>
+            <div class="server-select-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== SERVER 8 ===== -->
+    <div class="server-card" data-server="7">
+        <div class="server-card-inner">
+            <div class="server-icon-container">
+                <div class="server-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#e74c3c">
+                        <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="server-info">
+                <div class="server-name">Server 8</div>
+                <div class="server-user-count">
+                    <span class="loading-text">Loading...</span>
+                </div>
+            </div>
+            <div class="server-select-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
 </div>
             
         </div>
