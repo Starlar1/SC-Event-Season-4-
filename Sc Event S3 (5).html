@@ -6080,7 +6080,8 @@ function addProfileCircleToHomeScreen() {
     }
     
 
-             // Add hidden file inputs if not exist
+             
+         // Add hidden file inputs if not exist
     if (!document.getElementById('modal-file-input')) {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -6139,7 +6140,7 @@ function setupProfileModalEvents() {
             fileInput.click();
         });
         
-        fileInput.addEventListener('change', async function(e) { // ADDED async
+        fileInput.addEventListener('change', function(e) {
             if (this.files && this.files[0]) {
                 const file = this.files[0];
                 
@@ -6155,7 +6156,7 @@ function setupProfileModalEvents() {
                 }
                 
                 const reader = new FileReader();
-                reader.onload = async function(e) { // ADDED async
+                reader.onload = function(e) {
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.style.width = '100%';
@@ -6188,10 +6189,10 @@ function setupProfileModalEvents() {
                     userData.profileImage = e.target.result;
                     localStorage.setItem('gameUserData', JSON.stringify(userData));
                     
-                    // Sync to all 8 servers
-                    await syncProfileImageToServer(e.target.result);
+                    // Sync to Server if possible
+                    syncProfileImageToServer(e.target.result);
                     
-                    alert('Profile picture updated successfully on all 8 servers!');
+                    alert('Profile picture updated successfully!');
                 };
                 reader.readAsDataURL(file);
             }
@@ -6233,7 +6234,7 @@ function showProfileModal() {
     
     if (serverElement) {
         const serverNum = userData.serverIndex !== undefined ? userData.serverIndex + 1 : 1;
-        serverElement.textContent = `Server ${serverNum} (of 8 servers)`;
+        serverElement.textContent = `Server ${serverNum}`;
     }
 
     // Update profile image
@@ -6293,60 +6294,30 @@ function updateHomeProfile() {
     }
 }
 
-// Sync profile image to Server (UPDATED FOR 8 SERVERS)
+// Sync profile image to Server
 async function syncProfileImageToServer(imageData) {
     try {
         const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
         if (!userData.userID) return;
         
-        // Update on all 8 servers
-        const syncPromises = [];
-        
+        // Update on all servers
         for (let i = 0; i < SUPABASE_SERVERS.length; i++) {
             try {
                 const supabaseClient = getSupabaseClient(i);
-                const promise = supabaseClient
+                const { error } = await supabaseClient
                     .from('users')
                     .update({ profile_image: imageData })
                     .eq('user_id', userData.userID);
                 
-                syncPromises.push(promise);
+                if (!error) {
+                    console.log(`Profile image synced to server ${i + 1}`);
+                }
             } catch (e) {
-                console.log(`Failed to create sync for server ${i + 1}:`, e.message);
+                console.log(`Failed to sync to server ${i + 1}`);
             }
         }
-        
-        // Execute all syncs in parallel
-        const results = await Promise.allSettled(syncPromises);
-        
-        let successCount = 0;
-        let failCount = 0;
-        
-        results.forEach((result, index) => {
-            if (result.status === 'fulfilled' && !result.value.error) {
-                successCount++;
-                console.log(`✅ Profile image synced to server ${index + 1}`);
-            } else {
-                failCount++;
-                console.log(`❌ Failed to sync to server ${index + 1}`);
-            }
-        });
-        
-        console.log(`Profile image sync completed: ${successCount} successful, ${failCount} failed`);
-        
-        return {
-            success: successCount > 0,
-            successCount: successCount,
-            failCount: failCount,
-            totalServers: SUPABASE_SERVERS.length
-        };
-        
     } catch (error) {
         console.error('Error syncing profile image:', error);
-        return {
-            success: false,
-            error: error.message
-        };
     }
 }
 
@@ -6377,7 +6348,7 @@ function showEditProfileScreen() {
             
             <div class="edit-header">
                 <h2>Edit Profile</h2>
-                <p>Update your profile information (will sync to all 8 servers)</p>
+                <p>Update your profile information</p>
             </div>
             
             <div class="edit-form">
@@ -6416,7 +6387,7 @@ function showEditProfileScreen() {
                         <svg viewBox="0 0 24 24" width="18" height="18">
                             <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z" fill="currentColor"/>
                         </svg>
-                        Save Changes (8 servers)
+                        Save Changes
                     </button>
                 </div>
             </div>
@@ -6426,7 +6397,11 @@ function showEditProfileScreen() {
     `;
     
     document.body.appendChild(editScreen);           
-                    
+
+        
+
+
+
     
 
     
