@@ -7743,7 +7743,7 @@ const rankSystemHTML = `
 `;
 
 
-     // Rank System Variables
+// Rank System Variables
 let rankSystemInitialized = false;
 let activeServerIndex = 0;
 let activeRankType = 'coins';
@@ -7795,13 +7795,24 @@ function setupRankEvents() {
             }, { passive: true });
         }
         
-        // Server cards (NOW 6 CARDS)
+        // Server cards (NOW 8 CARDS) // CHANGED COMMENT
         const serverCards = document.querySelectorAll('.server-card');
         serverCards.forEach(card => {
-            card.addEventListener('click', function(e) {
+            card.addEventListener('click', async function(e) { // ADDED async
                 e.preventDefault();
                 e.stopPropagation();
                 const serverIndex = parseInt(this.dataset.server);
+                
+                // Check server availability before showing
+                const userCountElement = this.querySelector('.server-user-count');
+                if (userCountElement) {
+                    const countText = userCountElement.textContent;
+                    if (countText.includes('FULL') || countText.includes('100/100')) {
+                        alert(`Server ${serverIndex + 1} is currently full.\nPlease select another server.`);
+                        return;
+                    }
+                }
+                
                 showRankDisplayScreen(serverIndex);
             }, { passive: true });
         });
@@ -7963,24 +7974,16 @@ function hideRankDisplayScreen() {
     showRankServerScreen();
 }
 
-// Load server user counts for 6 servers (only when rank button clicked)
+// Load server user counts for 8 servers (only when rank button clicked)
 async function loadServerUserCounts() {
     try {
         const serverCards = document.querySelectorAll('.server-card');
         
-        // Load counts for all 6 servers
-        for (let i = 0; i < 6; i++) { // CHANGED: 6 servers
+        // Load counts for all 8 servers // CHANGED TO 8
+        for (let i = 0; i < SUPABASE_SERVERS.length; i++) { 
             try {
-                const supabaseClient = getSupabaseClient(i);
-                const { count, error } = await supabaseClient
-                    .from('users')
-                    .select('*', { count: 'exact', head: true });
-                
-                if (!error && count !== null) {
-                    updateServerUserCount(i, count);
-                } else {
-                    updateServerUserCount(i, 0);
-                }
+                const userCount = await countServerUsers(i);
+                updateServerUserCount(i, userCount);
             } catch (error) {
                 console.log(`Failed to load server ${i + 1} count`);
                 updateServerUserCount(i, 0);
@@ -7997,18 +8000,37 @@ function updateServerUserCount(serverIndex, count) {
     if (serverCards[serverIndex]) {
         const userCountElement = serverCards[serverIndex].querySelector('.server-user-count');
         if (userCountElement) {
-            userCountElement.textContent = `${count} User${count !== 1 ? 's' : ''}`;
-            
-            // Add color coding based on user count
-            if (count >= 100) {
+            // Use your countServerUsers function which returns 999 if full/error
+            if (count >= 100 || count === 999) {
+                userCountElement.textContent = `FULL (100/100)`;
                 userCountElement.style.color = '#ff6b6b';
                 userCountElement.style.fontWeight = 'bold';
-            } else if (count >= 80) {
-                userCountElement.style.color = '#f39c12';
-            } else if (count >= 50) {
-                userCountElement.style.color = '#f1c40f';
+                
+                // Disable server card if full
+                serverCards[serverIndex].style.opacity = '0.6';
+                serverCards[serverIndex].style.cursor = 'not-allowed';
+                serverCards[serverIndex].style.pointerEvents = 'none';
+                serverCards[serverIndex].title = 'This server is full. Please select another server.';
             } else {
-                userCountElement.style.color = '#2ecc71';
+                userCountElement.textContent = `${count}/100 Users`;
+                
+                // Add color coding based on user count
+                if (count >= 80) {
+                    userCountElement.style.color = '#f39c12';
+                    userCountElement.title = 'Server almost full';
+                } else if (count >= 50) {
+                    userCountElement.style.color = '#f1c40f';
+                    userCountElement.title = 'Server moderately used';
+                } else {
+                    userCountElement.style.color = '#2ecc71';
+                    userCountElement.title = 'Server has available space';
+                }
+                
+                // Enable server card if not full
+                serverCards[serverIndex].style.opacity = '1';
+                serverCards[serverIndex].style.cursor = 'pointer';
+                serverCards[serverIndex].style.pointerEvents = 'auto';
+                serverCards[serverIndex].title = `Server ${serverIndex + 1} - Click to view rankings`;
             }
         }
     }
@@ -8037,6 +8059,12 @@ async function loadServerRankings(serverIndex, rankType = 'coins') {
     if (loadMoreContainer) loadMoreContainer.style.display = 'none';
     
     try {
+        // First check if server is available using your countServerUsers function
+        const userCount = await countServerUsers(serverIndex);
+        if (userCount >= 100 || userCount === 999) {
+            throw new Error(`Server ${serverIndex + 1} is full or unavailable`);
+        }
+        
         // Get Supabase client for selected server
         const supabaseClient = getSupabaseClient(serverIndex);
         
@@ -8065,7 +8093,7 @@ async function loadServerRankings(serverIndex, rankType = 'coins') {
                 empty.style.display = 'flex';
                 const emptyText = empty.querySelector('.empty-text');
                 if (emptyText) {
-                    emptyText.textContent = `Error loading Server ${serverIndex + 1} rankings`;
+                    emptyText.textContent = `Server ${serverIndex + 1} is unavailable`;
                 }
             }
             isLoading = false;
@@ -8100,13 +8128,13 @@ async function loadServerRankings(serverIndex, rankType = 'coins') {
         if (error.name === 'AbortError') {
             console.log('Rank loading cancelled');
         } else {
-            console.error('Error loading rankings:', error);
+            console.error('Error loading rankings:', error.message);
             if (loading) loading.style.display = 'none';
             if (empty) {
                 empty.style.display = 'flex';
                 const emptyText = empty.querySelector('.empty-text');
                 if (emptyText) {
-                    emptyText.textContent = 'Error loading rankings';
+                    emptyText.textContent = error.message || 'Error loading rankings';
                 }
             }
         }
@@ -8129,6 +8157,12 @@ async function loadMoreRankings() {
     }
     
     try {
+        // First check if server is still available
+        const userCount = await countServerUsers(activeServerIndex);
+        if (userCount >= 100 || userCount === 999) {
+            throw new Error(`Server ${activeServerIndex + 1} is now full`);
+        }
+        
         // Get Supabase client for active server
         const supabaseClient = getSupabaseClient(activeServerIndex);
         
@@ -8164,8 +8198,13 @@ async function loadMoreRankings() {
         currentPage++;
         
     } catch (error) {
-        console.error('Error loading more rankings:', error);
+        console.error('Error loading more rankings:', error.message);
         hasMoreUsers = false;
+        
+        // Show error to user
+        if (loadMoreBtn) {
+            loadMoreBtn.textContent = 'Server Full';
+        }
     }
 
     // Re-enable load more button
@@ -8247,7 +8286,17 @@ function createRankItem(user, position, rankType) {
 // Initialize rank system when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initializeRankSystem, 100);
-});           
+});
+        
+
+
+
+
+    
+        
+        
+        
+   
     
 
         
