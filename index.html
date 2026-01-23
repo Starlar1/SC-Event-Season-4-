@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/> <meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/> <meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Supabase Client -->
@@ -8479,6 +8479,449 @@ setInterval(() => {
         circle.style.height = '80px';
     }
 }, 500);
+
+// ===== RULES SYSTEM =====
+// Rules Button HTML for Sidebar
+const rulesButtonHTML = `
+<button class="sidebar-btn" id="rules-btn" style="
+    background: rgba(255, 0, 0, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(255,0,0,0.5);
+">
+    <span style="color: #ffffff; font-weight: 600;">စည်းကမ်းများ</span>
+</button>
+`;
+
+// Rules Screen HTML
+const rulesScreenHTML = `
+<div class="rules-screen" id="rules-screen" style="display:none;">
+    <div class="rules-background"></div>
+    
+    <div class="rules-content">
+        <!-- Back Button -->
+        <button class="rules-back-btn" id="rules-back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+            Back
+        </button>
+        
+        <!-- Clickable Chat Bubble -->
+        <div class="rules-chat-bubble" id="rules-chat-bubble">
+            <span id="rules-chat-text">သိထားစရာများကြည့်ရန်နှိပ်ပါ</span>
+        </div>
+        
+        <!-- Rules Selection Modal -->
+        <div class="rules-selection-modal" id="rules-selection-modal" style="display:none;">
+            <div class="rules-modal-content">
+                <div class="rules-modal-header">
+                    <h3>စာကိုရွေးပါ</h3>
+                    <button class="rules-modal-close" id="rules-modal-close">&times;</button>
+                </div>
+                <div class="rules-options">
+                    <button class="rules-option-btn" data-rule="withdrawal-limit">ထုတ်ယူခြင်း အကန့်အသတ်</button>
+                    <button class="rules-option-btn" data-rule="should-not-do">မလုပ်သင့်သော အရာများ</button>
+                    <button class="rules-option-btn" data-rule="banned-items">ပိတ်ပင်ခံရနိုင်သော အရာများ</button>
+                    <button class="rules-option-btn" data-rule="official-channel">Official Channel</button>
+                    <button class="rules-option-btn" data-rule="contact">ဆက်သွယ်ရန်</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Rules Screen Styles */
+.rules-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: none;
+}
+
+.rules-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("https://i.ibb.co/HLYt6m1X/Untitled15-20260123134811.png") center/cover no-repeat;
+    filter: brightness(0.7);
+}
+
+.rules-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 25px; /* Bubble ကို အောက်နည်းနည်းချ */
+}
+
+/* Back Button */
+.rules-back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(52, 152, 219, 0.9);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+.rules-back-btn:hover {
+    background: rgba(41, 128, 185, 0.9);
+    transform: translateY(-2px);
+}
+
+/* Clickable Chat Bubble */
+.rules-chat-bubble {
+    background: rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+    padding: 18px 28px;
+    border-radius: 22px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 90%;
+    min-height: 90px;
+    line-height: 1.6;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 2px solid rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+    margin-bottom: 10px;
+
+    /* 3 Lines Clamp */
+    overflow: hidden;
+}
+
+#rules-chat-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    font-smooth: always;
+}
+
+/* Hover Effect */
+.rules-chat-bubble:hover {
+    background: rgba(0, 0, 0, 0.55);
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 8px 30px rgba(0,0,0,0.35); }
+    50% { box-shadow: 0 8px 30px rgba(255,0,0,0.5); }
+    100% { box-shadow: 0 8px 30px rgba(0,0,0,0.35); }
+}
+
+/* Rules Selection Modal */
+.rules-selection-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.rules-modal-content {
+    background: rgba(30, 30, 45, 0.95);
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    animation: modalSlideUp 0.4s ease;
+}
+
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.rules-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rules-modal-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.rules-modal-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    line-height: 1;
+}
+
+.rules-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.rules-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rules-option-btn {
+    background: rgba(52, 152, 219, 0.2);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+.rules-option-btn:hover {
+    background: rgba(52, 152, 219, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.rules-option-btn:active {
+    transform: translateY(0);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .rules-chat-bubble {
+        font-size: 16px;
+        padding: 14px 22px;
+        min-height: 80px;
+    }
+    
+    .rules-modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .rules-option-btn {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+}
+</style>
+`;
+
+// Rules Data
+const rulesData = {
+    'withdrawal-limit': 'Diamonds များကို တစ်လလျှင် တစ်ကြိမ်သာ ထုတ်ယူခွင့်ရှိပါသည်။',
+    'should-not-do': 'Channel များကို အမှန်တကယ် Join မလုပ်ပါက Diamonds မရရှိနိုင်ပါ။',
+    'banned-items': 'Hack သို့မဟုတ် Settings မမှန်ကန်စွာ ပြုပြင်ခြင်းသည် အကောင့်ကို တစ်သက်တာ ပိတ်ပင်ခံရနိုင်ပါသည်။',
+    'official-channel': 'တရားဝင် Channel - https://t.me/StarlarCompany',
+    'contact': 'Telegram - @Stalar1'
+};
+
+// Initialize Rules System
+function initializeRulesSystem() {
+    const sidebarButtons = document.getElementById('sidebar-buttons');
+    if (sidebarButtons && !document.getElementById('rules-btn')) {
+        sidebarButtons.insertAdjacentHTML('beforeend', rulesButtonHTML);
+    }
+    
+    if (!document.getElementById('rules-screen')) {
+        document.body.insertAdjacentHTML('beforeend', rulesScreenHTML);
+    }
+    
+    setupRulesEvents();
+}
+
+// Setup event listeners
+function setupRulesEvents() {
+    const rulesBtn = document.getElementById('rules-btn');
+    if (rulesBtn) {
+        rulesBtn.onclick = showRulesScreen;
+    }
+    
+    const rulesBackBtn = document.getElementById('rules-back-btn');
+    if (rulesBackBtn) {
+        rulesBackBtn.onclick = hideRulesScreen;
+    }
+    
+    const rulesChatBubble = document.getElementById('rules-chat-bubble');
+    if (rulesChatBubble) {
+        rulesChatBubble.onclick = showRulesSelectionModal;
+    }
+    
+    const rulesModalClose = document.getElementById('rules-modal-close');
+    if (rulesModalClose) {
+        rulesModalClose.onclick = hideRulesSelectionModal;
+    }
+    
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('rules-option-btn')) {
+            showRuleAnswer(e.target.dataset.rule);
+        }
+    });
+    
+    const rulesSelectionModal = document.getElementById('rules-selection-modal');
+    if (rulesSelectionModal) {
+        rulesSelectionModal.onclick = function(e) {
+            if (e.target === rulesSelectionModal) {
+                hideRulesSelectionModal();
+            }
+        };
+    }
+}
+
+// Show rules screen
+function showRulesScreen() {
+    const gameContainer = document.getElementById('game-container');
+    const rulesScreen = document.getElementById('rules-screen');
+    
+    if (gameContainer) gameContainer.style.display = 'none';
+    if (rulesScreen) rulesScreen.style.display = 'block';
+    
+    const chatText = document.getElementById('rules-chat-text');
+    if (chatText) {
+        chatText.textContent = 'သိထားစရာများကြည့်ရန်နှိပ်ပါ';
+        chatText.style.fontSize = '20px';
+    }
+}
+
+// Hide rules screen
+function hideRulesScreen() {
+    const rulesScreen = document.getElementById('rules-screen');
+    const gameContainer = document.getElementById('game-container');
+    
+    if (rulesScreen) rulesScreen.style.display = 'none';
+    if (gameContainer) gameContainer.style.display = 'block';
+    
+    hideRulesSelectionModal();
+}
+
+// Show rules selection modal
+function showRulesSelectionModal() {
+    const selectionModal = document.getElementById('rules-selection-modal');
+    if (selectionModal) {
+        selectionModal.style.display = 'flex';
+    }
+}
+
+// Hide rules selection modal
+function hideRulesSelectionModal() {
+    const selectionModal = document.getElementById('rules-selection-modal');
+    if (selectionModal) {
+        selectionModal.style.display = 'none';
+    }
+}
+
+// Show rule answer with auto fit + typing
+function showRuleAnswer(ruleType) {
+    const answerText = rulesData[ruleType];
+    if (!answerText) return;
+    
+    hideRulesSelectionModal();
+    
+    const chatText = document.getElementById('rules-chat-text');
+    const chatBubble = document.getElementById('rules-chat-bubble');
+    if (!chatText || !chatBubble) return;
+    
+    chatBubble.style.pointerEvents = 'none';
+    chatText.textContent = '';
+    chatText.style.fontSize = '20px';
+    
+    let charIndex = 0;
+    
+    function fitText() {
+        let size = 20;
+        chatText.style.fontSize = size + 'px';
+        while (chatText.scrollHeight > chatBubble.clientHeight && size > 12) {
+            size -= 1;
+            chatText.style.fontSize = size + 'px';
+        }
+    }
+    
+    function typeCharacter() {
+        if (charIndex < answerText.length) {
+            chatText.textContent += answerText.charAt(charIndex);
+            charIndex++;
+            fitText();
+            setTimeout(typeCharacter, 40);
+        } else {
+            setTimeout(() => {
+                chatText.textContent = 'သိထားစရာများကြည့်ရန်နှိပ်ပါ';
+                chatText.style.fontSize = '20px';
+                chatBubble.style.pointerEvents = 'auto';
+            }, 3000);
+        }
+    }
+    
+    typeCharacter();
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initializeRulesSystem, 100);
+});
+
+
 
 </script>
 </body>
