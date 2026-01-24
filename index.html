@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/> <meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/> <meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Supabase Client -->
@@ -2229,7 +2229,7 @@ const taskScreenHTML = `
                 <span class="btn-text">အချိန်ကျန်ရှိပါသေးသည်</span>
                 <span class="btn-tokens">
                     <img src="https://i.ibb.co/YTbp2Z70/Grid-Art-20251201-170338013.png" class="token-icon-btn">
-                    <span>+1</span>
+                    <span>+3</span>
                 </span>
             </button>
         </div>
@@ -8515,7 +8515,7 @@ const rulesScreenHTML = `
         <div class="rules-selection-modal" id="rules-selection-modal" style="display:none;">
             <div class="rules-modal-content">
                 <div class="rules-modal-header">
-                    <h3>‌မေးခွန်းရွေးပါ</h3>
+                    <h3>စာကိုရွေးပါ</h3>
                     <button class="rules-modal-close" id="rules-modal-close">&times;</button>
                 </div>
                 <div class="rules-options">
@@ -8921,7 +8921,156 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initializeRulesSystem, 100);
 });
 
+// ===== SUPABASE BAN SYSTEM =====
 
+// 1. Check ban status from Supabase
+async function checkBanStatus() {
+    try {
+        const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+        
+        if (!userData || !userData.userID) {
+            return false;
+        }
+        
+        // Check all servers
+        for (let i = 0; i < SUPABASE_SERVERS.length; i++) {
+            try {
+                const supabaseClient = getSupabaseClient(i);
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('banned')
+                    .eq('user_id', userData.userID)
+                    .single();
+                
+                if (!error && data && data.banned === true) {
+                    return true;
+                }
+            } catch (e) {
+                continue;
+            }
+        }
+        
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
+
+// 2. Show ban screen
+function showBanScreen() {
+    // Hide everything
+    document.querySelectorAll('div').forEach(div => {
+        if (div.id !== 'ban-screen') {
+            div.style.display = 'none';
+        }
+    });
+    
+    // Remove existing
+    const existing = document.getElementById('ban-screen');
+    if (existing) existing.remove();
+    
+    // Create ban screen
+    const banScreen = document.createElement('div');
+    banScreen.id = 'ban-screen';
+    banScreen.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        ">
+            <div style="
+                background: rgba(0,0,0,0.9);
+                padding: 40px;
+                border-radius: 20px;
+                text-align: center;
+                border: 2px solid #ff6b6b;
+                max-width: 400px;
+                width: 90%;
+            ">
+                <div style="font-size: 60px; margin-bottom: 20px;">🚫</div>
+                <h1 style="color: #ff6b6b; margin-bottom: 15px;">New Season </h1>
+                <p style="color: white; margin-bottom: 30px; line-height: 1.5;">
+                    Season 4 ကိုစတင်ရန်။<br>
+                    ကျေးဇူးပြု၍ အကောင့်သစ်ဖွင့်ပါ။
+                </p>
+                <button id="ban-reset-btn" style="
+                    background: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 10px;
+                    padding: 15px 30px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    width: 100%;
+                ">
+                    အကောင့်သစ်ဖွင့်မည်
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(banScreen);
+    
+    // Reset button click
+    document.getElementById('ban-reset-btn').onclick = function() {
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        const content = banScreen.querySelector('div > div');
+        content.innerHTML = `
+            <div style="font-size: 60px; margin-bottom: 20px; color: #4CAF50;"></div>
+            <h1 style="color: #4CAF50; margin-bottom: 15px;"></h1>
+            <p style="color: white; margin-bottom: 30px;">
+                အကောင့်သစ်ဖွင့်ပြီးပါပြီ<br>
+                အစကပြန်၀င်ပေးပါ
+            </p>
+        `;
+        
+        setTimeout(() => location.reload(), 2000);
+    };
+}
+
+// 3. Initialize ban check
+async function initializeBanSystem() {
+    setTimeout(async () => {
+        const isBanned = await checkBanStatus();
+        if (isBanned) {
+            showBanScreen();
+        }
+    }, 3000);
+    
+    // Check every 30 seconds
+    setInterval(async () => {
+        const isBanned = await checkBanStatus();
+        if (isBanned && !document.getElementById('ban-screen')) {
+            showBanScreen();
+        }
+    }, 30000);
+}
+
+// 4. Start ban system
+document.addEventListener('DOMContentLoaded', initializeBanSystem);
+
+// 5. Check when entering game
+const enterBtn = document.getElementById('enter-btn');
+if (enterBtn) {
+    const originalClick = enterBtn.onclick;
+    enterBtn.onclick = function() {
+        if (originalClick) originalClick();
+        setTimeout(async () => {
+            const isBanned = await checkBanStatus();
+            if (isBanned) showBanScreen();
+        }, 1000);
+    };
+}
 
 </script>
 </body>
