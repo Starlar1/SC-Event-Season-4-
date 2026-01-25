@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/> <meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/> <meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Supabase Client -->
@@ -9071,6 +9071,1016 @@ if (enterBtn) {
         }, 1000);
     };
 }
+
+// ===== FINAL INVITE SYSTEM - SINGLE USE =====
+
+// 1. Sidebar မှာ Invite Button ထည့်ပါ
+function addInviteButtonToSidebar() {
+    const sidebarButtons = document.getElementById('sidebar-buttons');
+    if (!sidebarButtons) return;
+    
+    if (document.getElementById('invite-btn')) return;
+    
+    const inviteButtonHTML = `
+        <button class="sidebar-btn" id="invite-btn">
+            <span>Invite</span>
+        </button>
+    `;
+    
+    sidebarButtons.insertAdjacentHTML('beforeend', inviteButtonHTML);
+    
+    setTimeout(() => {
+        const inviteBtn = document.getElementById('invite-btn');
+        if (inviteBtn) {
+            inviteBtn.addEventListener('click', function() {
+                showInviteScreen();
+            });
+        }
+    }, 100);
+}
+
+// 2. Invite Screen HTML
+function createInviteScreenHTML() {
+    if (document.getElementById('invite-screen')) return;
+    
+    const inviteScreenHTML = `
+    <div class="invite-screen" id="invite-screen" style="display:none;">
+        <div class="invite-background"></div>
+        
+        <div class="invite-content">
+            <button class="invite-back-btn" id="invite-back-btn">
+                <svg viewBox="0 0 24 24" width="18" height="18">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+                </svg>
+                Back
+            </button>
+            
+            <div class="invite-header">
+                <h2>Invite System</h2>
+                <p>Code တစ်ခါသာထည့်ခွင့်ရှိပါသည်</p>
+            </div>
+            
+            <!-- Get Code Button Section -->
+            <div class="get-code-section" id="get-code-section">
+                <button class="get-code-btn" id="get-code-btn">
+                    <span class="btn-text">Code ရယူမည်</span>
+                </button>
+                <div class="code-note">
+                    Code ရယူပြီးရင် သူငယ်ချင်းများကိုပေးပါ<br>
+                    သူတို့ထည့်တိုင်း သင့်အတွက် Crystal 1 ရမည်
+                </div>
+            </div>
+            
+            <!-- My Code Section -->
+            <div class="my-code-section" id="my-code-section" style="display:none;">
+                <div class="section-title">My Code</div>
+                <div class="single-code-display" id="single-code-display">
+                    <span class="code-text" id="my-code-text">Loading...</span>
+                </div>
+                <div class="code-info">
+                    ဒီ Code ကိုသူငယ်ချင်းများကိုပေးပါ<br>
+                    သူတို့ထည့်တဲ့အခါ သင့်အတွက် Crystal 1 ရမည်
+                </div>
+                
+                <button class="share-telegram-btn" id="share-telegram-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.79 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.86-.44-.75-.24-1.35-.37-1.29-.78.03-.2.32-.41.89-.62 3.49-1.52 5.83-2.53 7.02-3.02 3.33-1.4 4.03-1.64 4.48-1.65.1 0 .32.02.46.14.12.1.15.23.16.33.02.1.02.32-.02.5z" fill="currentColor"/>
+                    </svg>
+                    Telegram သို့ Share မည်
+                </button>
+            </div>
+            
+            <!-- Enter Code Section - Shows only if not used yet -->
+            <div class="enter-code-section" id="enter-code-section">
+                <div class="section-title">သူငယ်ချင်း၏ Code ထည့်ပါ</div>
+                <div class="code-input-section">
+                    <input type="text" id="enter-invite-code" placeholder="Code ထည့်ပါ" maxlength="10">
+                    <button class="submit-code-btn" id="submit-code-btn">
+                        ထည့်မည်
+                    </button>
+                </div>
+                <div class="code-note">
+                    Code ကိုတစ်ခါသာထည့်လို့ရပါသည်<br>
+                    သင့်သူငယ်ချင်းများကိုအကူညီတောင်းပါ
+                </div>
+            </div>
+            
+            <!-- Used Codes List -->
+            <div class="used-codes-section" id="used-codes-section" style="display:none;">
+                <div class="section-title">လာရောက်သူများ</div>
+                <div class="used-codes-list" id="used-codes-list">
+                    <div class="loading-codes">လာရောက်သူများကိုစစ်ဆေးနေသည်...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    .invite-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1000;
+        display: none;
+    }
+    
+    .invite-background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    }
+    
+    .invite-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        overflow-y: auto;
+        color: white;
+    }
+    
+    .invite-back-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(52, 152, 219, 0.9);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .invite-back-btn:hover {
+        background: rgba(41, 128, 185, 0.9);
+        transform: translateY(-2px);
+    }
+    
+    .invite-header {
+        text-align: center;
+        margin: 70px 0 30px;
+        padding: 0 20px;
+    }
+    
+    .invite-header h2 {
+        font-size: 28px;
+        margin-bottom: 8px;
+        color: #FFD700;
+    }
+    
+    .invite-header p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 15px;
+    }
+    
+    /* Get Code Button Section */
+    .get-code-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .get-code-btn {
+        background: linear-gradient(135deg, #FF6B6B, #FF4757);
+        color: white;
+        border: none;
+        padding: 18px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .get-code-btn:hover:not(:disabled) {
+        background: linear-gradient(135deg, #FF4757, #FF3838);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.4);
+    }
+    
+    .get-code-btn:disabled {
+        background: #666;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    /* My Code Section */
+    .my-code-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .single-code-display {
+        background: rgba(0, 0, 0, 0.3);
+        border: 3px solid rgba(255, 215, 0, 0.4);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    .code-text {
+        font-family: 'Courier New', monospace;
+        font-size: 28px;
+        font-weight: bold;
+        letter-spacing: 3px;
+        color: #FFD700;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        display: block;
+    }
+    
+    .code-info {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+        text-align: center;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+    
+    /* Share Button */
+    .share-telegram-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #0088cc, #006699);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+    
+    .share-telegram-btn:hover {
+        background: linear-gradient(135deg, #0099e6, #0088cc);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+    }
+    
+    /* Enter Code Section */
+    .enter-code-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .code-input-section {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #enter-invite-code {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 15px;
+        color: white;
+        font-size: 18px;
+        font-family: monospace;
+        letter-spacing: 2px;
+        outline: none;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    #enter-invite-code::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 16px;
+        letter-spacing: normal;
+    }
+    
+    #enter-invite-code:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+    
+    .submit-code-btn {
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        min-width: 120px;
+    }
+    
+    .submit-code-btn:hover:not(:disabled) {
+        background: linear-gradient(135deg, #66BB6A, #388E3C);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    }
+    
+    .submit-code-btn:disabled {
+        background: #666;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    .code-note {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+        text-align: center;
+        line-height: 1.5;
+        margin-top: 5px;
+    }
+    
+    /* Used Codes List */
+    .used-codes-list {
+        max-height: 150px;
+        overflow-y: auto;
+    }
+    
+    .used-code-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .used-code-info {
+        flex: 1;
+    }
+    
+    .used-code-name {
+        color: white;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+    
+    .used-code-date {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 11px;
+    }
+    
+    .used-code-reward {
+        color: #FFD700;
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .loading-codes, .no-codes {
+        text-align: center;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+    }
+    
+    @media (max-width: 600px) {
+        .invite-header {
+            margin: 60px 0 25px;
+        }
+        
+        .invite-header h2 {
+            font-size: 24px;
+        }
+        
+        .code-text {
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+        
+        .code-input-section {
+            flex-direction: column;
+        }
+        
+        .submit-code-btn {
+            width: 100%;
+        }
+        
+        .invite-back-btn {
+            top: 15px;
+            left: 15px;
+            padding: 8px 15px;
+        }
+    }
+    </style>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', inviteScreenHTML);
+}
+
+// 3. Initialize Invite System
+function initializeInviteSystem() {
+    addInviteButtonToSidebar();
+    createInviteScreenHTML();
+    setupInviteEvents();
+    
+    // Check user code status on init
+    setTimeout(() => {
+        updateCodeButtonStatus();
+    }, 1000);
+}
+
+// 4. Setup Event Listeners
+function setupInviteEvents() {
+    setTimeout(() => {
+        const backBtn = document.getElementById('invite-back-btn');
+        if (backBtn) {
+            backBtn.addEventListener('click', hideInviteScreen);
+        }
+        
+        const getCodeBtn = document.getElementById('get-code-btn');
+        if (getCodeBtn) {
+            getCodeBtn.addEventListener('click', generateUserCode);
+        }
+        
+        const shareBtn = document.getElementById('share-telegram-btn');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', shareCodeToTelegram);
+        }
+        
+        const submitBtn = document.getElementById('submit-code-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', submitFriendCode);
+        }
+        
+        const codeInput = document.getElementById('enter-invite-code');
+        if (codeInput) {
+            codeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitFriendCode();
+                }
+            });
+        }
+    }, 500);
+}
+
+// 5. Show Invite Screen
+function showInviteScreen() {
+    const gameContainer = document.getElementById('game-container');
+    const inviteScreen = document.getElementById('invite-screen');
+    
+    if (gameContainer) gameContainer.style.display = 'none';
+    if (inviteScreen) inviteScreen.style.display = 'block';
+    
+    // ကိုယ့် code ရှိမရှိစစ်ပါ
+    checkUserCodeStatus();
+    
+    // Code button status ကိုပြန်စစ်ပါ
+    updateCodeButtonStatus();
+    
+    // Code ထည့်ပြီးသားလား စစ်ပါ
+    checkIfAlreadyUsedCode();
+}
+
+// 6. Hide Invite Screen
+function hideInviteScreen() {
+    const inviteScreen = document.getElementById('invite-screen');
+    const gameContainer = document.getElementById('game-container');
+    
+    if (inviteScreen) inviteScreen.style.display = 'none';
+    if (gameContainer) gameContainer.style.display = 'block';
+}
+
+// 7. Check if already used a code
+function checkIfAlreadyUsedCode() {
+    const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+    const enterCodeSection = document.getElementById('enter-code-section');
+    
+    // ကိုယ့်ကိုယ်ကို code ထည့်ပြီးသားလား စစ်ပါ
+    if (userData.hasUsedInviteCode) {
+        // Code ထည့်ပြီးသားဆိုရင် ဒီ section ကိုဝှက်ပါ
+        if (enterCodeSection) {
+            enterCodeSection.style.display = 'none';
+        }
+    } else {
+        // Code မထည့်ရသေးရင် ပြပါ
+        if (enterCodeSection) {
+            enterCodeSection.style.display = 'block';
+        }
+    }
+}
+
+// 8. Update Code Button Status
+function updateCodeButtonStatus() {
+    const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+    const getCodeBtn = document.getElementById('get-code-btn');
+    
+    if (getCodeBtn) {
+        if (userData.inviteCode) {
+            // Code ရှိပြီးသား
+            getCodeBtn.disabled = true;
+            getCodeBtn.textContent = 'Code ရရှိပြီးသား';
+            getCodeBtn.style.background = '#666';
+        } else {
+            // Code မရှိသေး
+            getCodeBtn.disabled = false;
+            getCodeBtn.textContent = 'Code ရယူမည်';
+            getCodeBtn.style.background = 'linear-gradient(135deg, #FF6B6B, #FF4757)';
+        }
+    }
+}
+
+// 9. Check User Code Status
+function checkUserCodeStatus() {
+    const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+    const myCodeSection = document.getElementById('my-code-section');
+    
+    if (userData.inviteCode) {
+        // Code ရှိပြီးသား
+        if (myCodeSection) myCodeSection.style.display = 'block';
+        
+        // Code ကိုပြပါ
+        const codeText = document.getElementById('my-code-text');
+        if (codeText) {
+            codeText.textContent = userData.inviteCode;
+        }
+        
+        // Used codes ကိုပြပါ
+        loadUsedCodes();
+    } else {
+        // Code မရှိသေး
+        if (myCodeSection) myCodeSection.style.display = 'none';
+    }
+}
+
+// 10. Generate User Code
+async function generateUserCode() {
+    const getCodeBtn = document.getElementById('get-code-btn');
+    if (getCodeBtn) getCodeBtn.disabled = true;
+    
+    try {
+        const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+        if (!userData.userID) {
+            showInviteMessage('User data not found', 'error');
+            if (getCodeBtn) getCodeBtn.disabled = false;
+            return;
+        }
+        
+        // Code ရှိပြီးသားလား
+        if (userData.inviteCode) {
+            showInviteMessage('သင့်မှာ Code ရှိပြီးသားဖြစ်သည်', 'error');
+            if (getCodeBtn) getCodeBtn.disabled = false;
+            return;
+        }
+        
+        // Random code ဖန်တီးပါ
+        const newCode = generateRandomCode();
+        
+        // Local storage မှာသိမ်းပါ
+        userData.inviteCode = newCode;
+        localStorage.setItem('gameUserData', JSON.stringify(userData));
+        
+        // Servers မှာသိမ်းပါ
+        await saveUserCodeToServers(userData.userID, newCode);
+        
+        // UI ကိုပြောင်းပါ
+        checkUserCodeStatus();
+        updateCodeButtonStatus();
+        
+        showInviteMessage(`Code ရရှိပါပြီ: ${newCode}`, 'success');
+        
+    } catch (error) {
+        showInviteMessage('Code ဖန်တီးရာတွင်အမှားဖြစ်နေပါသည်', 'error');
+        if (getCodeBtn) getCodeBtn.disabled = false;
+    }
+}
+
+// 11. Generate Random Code
+function generateRandomCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+}
+
+// 12. Save Code to Servers
+async function saveUserCodeToServers(userId, code) {
+    for (let i = 0; i < SUPABASE_SERVERS.length; i++) {
+        try {
+            const supabaseClient = getSupabaseClient(i);
+            
+            await supabaseClient
+                .from('users')
+                .update({ 
+                    invite_code: code,
+                    invite_code_created_at: new Date().toISOString()
+                })
+                .eq('user_id', userId);
+                
+        } catch (error) {
+            console.log(`Failed server ${i+1}:`, error.message);
+        }
+    }
+}
+
+// 13. Share Code to Telegram
+function shareCodeToTelegram() {
+    const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+    const code = userData.inviteCode;
+    
+    if (!code) {
+        showInviteMessage('Code မရှိသေးပါ', 'error');
+        return;
+    }
+    
+    const shareText = encodeURIComponent(
+        `MLBB Diamonds များကိုအခမဲ့ရယူလိုက်ပါ\n` +
+        `https://starlar1.github.io/SC-Event-Season-4-/\n\n` +
+        `Code - ${code} ကိုသုံးပြီး\n` +
+        `1 Crystal ရယူလိုက်ပါ`
+    );
+    
+    const telegramURL = `https://t.me/share/url?url=&text=${shareText}`;
+    
+    window.open(telegramURL, '_blank', 'width=600,height=500');
+    
+    showInviteMessage('Telegram Share window ပွင့်သွားပါပြီ', 'success');
+}
+
+// 14. Submit Friend's Code - SINGLE USE ONLY
+async function submitFriendCode() {
+    const codeInput = document.getElementById('enter-invite-code');
+    const submitBtn = document.getElementById('submit-code-btn');
+    const enterCodeSection = document.getElementById('enter-code-section');
+    
+    if (!codeInput || !submitBtn || !enterCodeSection) return;
+    
+    const enteredCode = codeInput.value.trim().toUpperCase();
+    
+    if (!enteredCode) {
+        showInviteMessage('Code ထည့်ပါ', 'error');
+        return;
+    }
+    
+    if (enteredCode.length < 6) {
+        showInviteMessage('Code မှားယွင်းနေပါသည်', 'error');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'စစ်ဆေးနေသည်...';
+    
+    try {
+        const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+        
+        // ကိုယ့် code ကိုမထည့်ရ
+        if (userData.inviteCode === enteredCode) {
+            showInviteMessage('ကိုယ့် Code ကိုမထည့်ရပါ', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'ထည့်မည်';
+            return;
+        }
+        
+        // တစ်ခါထက်ပိုထည့်ပြီးသားလား
+        if (userData.hasUsedInviteCode) {
+            showInviteMessage('သင့်မှာ Code ထည့်ခွင့်တစ်ကြိမ်သာရှိပါသည်', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'ထည့်မည်';
+            return;
+        }
+        
+        // Code owner ရှာပါ
+        const codeOwner = await findCodeOwner(enteredCode);
+        
+        if (!codeOwner) {
+            showInviteMessage('Code မှားယွင်းနေပါသည်', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'ထည့်မည်';
+            return;
+        }
+        
+        // အသုံးပြုသူကို Crystal 1 ပေးပါ
+        await giveCrystalToUser(userData.userID, 1, 'invite_reward');
+        
+        // Code owner ကိုလည်း Crystal 1 ပေးပါ
+        await giveCrystalToUser(codeOwner.user_id, 1, 'invite_owner_reward');
+        
+        // Used code ကိုမှတ်သားပါ
+        await markCodeAsUsed(enteredCode, userData.userID, userData.userName, codeOwner.user_id);
+        
+        // Local storage မှာမှတ်သားပါ - သုံးပြီးသား
+        userData.hasUsedInviteCode = true;
+        if (!userData.usedCodes) userData.usedCodes = [];
+        userData.usedCodes.push(enteredCode);
+        localStorage.setItem('gameUserData', JSON.stringify(userData));
+        
+        // Success message
+        showInviteMessage('သင့်သူငယ်ချင် Crystal 1 ရရှိပါသည်! သင့်သူငယ်ချင်းကျေးဇူးတင်ပါတယ်။', 'success');
+        
+        // Clear input
+        codeInput.value = '';
+        
+        // Code ထည့်တဲ့ section ကိုဝှက်ပါ
+        enterCodeSection.style.display = 'none';
+        
+        // Update UI
+        updateUserCrystals();
+        
+        // Load used codes
+        loadUsedCodes();
+        
+    } catch (error) {
+        showInviteMessage('အမှားဖြစ်နေပါသည်: ' + error.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ထည့်မည်';
+    }
+}
+
+// 15. Find Code Owner
+async function findCodeOwner(code) {
+    // 8 servers မှာရှာပါ
+    for (let i = 0; i < SUPABASE_SERVERS.length; i++) {
+        try {
+            const supabaseClient = getSupabaseClient(i);
+            
+            const { data, error } = await supabaseClient
+                .from('users')
+                .select('user_id, user_name, invite_code')
+                .eq('invite_code', code)
+                .single();
+            
+            if (!error && data) {
+                return data;
+            }
+        } catch (error) {
+            continue;
+        }
+    }
+    return null;
+}
+
+// 16. Give Crystal to User
+async function giveCrystalToUser(userId, amount, type) {
+    // Update on all servers
+    for (let i = 0; i < SUPABASE_SERVERS.length; i++) {
+        try {
+            const supabaseClient = getSupabaseClient(i);
+            
+            // Get current crystals
+            const { data: userData } = await supabaseClient
+                .from('users')
+                .select('crystals')
+                .eq('user_id', userId)
+                .single();
+            
+            if (userData) {
+                const currentCrystals = userData.crystals || 0;
+                const newCrystals = currentCrystals + amount;
+                
+                await supabaseClient
+                    .from('users')
+                    .update({ crystals: newCrystals })
+                    .eq('user_id', userId);
+            }
+        } catch (error) {
+            continue;
+        }
+    }
+    
+    // Update local storage for current user
+    const localData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+    if (localData.userID === userId) {
+        localData.crystals = (localData.crystals || 0) + amount;
+        localStorage.setItem('gameUserData', JSON.stringify(localData));
+    }
+}
+
+// 17. Mark Code as Used
+async function markCodeAsUsed(code, usedById, usedByName, ownerId) {
+    for (let i = 0; i < SUPABASE_SERVERS.length; i++) {
+        try {
+            const supabaseClient = getSupabaseClient(i);
+            
+            // Save to used_codes table
+            await supabaseClient
+                .from('used_invite_codes')
+                .insert({
+                    code: code,
+                    used_by_user_id: usedById,
+                    used_by_user_name: usedByName,
+                    owner_user_id: ownerId,
+                    used_at: new Date().toISOString()
+                });
+                
+        } catch (error) {
+            continue;
+        }
+    }
+}
+
+// 18. Load Used Codes
+async function loadUsedCodes() {
+    const usedSection = document.getElementById('used-codes-section');
+    const usedList = document.getElementById('used-codes-list');
+    
+    if (!usedSection || !usedList) return;
+    
+    const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+    
+    if (!userData.inviteCode) {
+        usedSection.style.display = 'none';
+        return;
+    }
+    
+    usedSection.style.display = 'block';
+    usedList.innerHTML = '<div class="loading-codes">Code အသုံးပြုသူများကိုစစ်ဆေးနေသည်...</div>';
+    
+    try {
+        const usedCodes = await getUsedCodesForUser(userData.inviteCode);
+        
+        if (usedCodes.length === 0) {
+            usedList.innerHTML = '<div class="no-codes">Code အသုံးပြုသူမရှိသေးပါ</div>';
+            return;
+        }
+        
+        let html = '';
+        usedCodes.forEach(code => {
+            const timeAgo = formatTimeAgo(code.used_at);
+            html += `
+                <div class="used-code-item">
+                    <div class="used-code-info">
+                        <div class="used-code-name">${code.used_by_user_name || 'Anonymous'}</div>
+                        <div class="used-code-date">${timeAgo}</div>
+                    </div>
+                    <div class="used-code-reward">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="#FFD700">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        Crystal +1
+                    </div>
+                </div>
+            `;
+        });
+        
+        usedList.innerHTML = html;
+        
+    } catch (error) {
+        usedList.innerHTML = '<div class="no-codes">Code အသုံးပြုသူများကိုမတွေ့ပါ</div>';
+    }
+}
+
+// 19. Get Used Codes for User
+async function getUsedCodesForUser(code) {
+    const allCodes = [];
+    
+    for (let i = 0; i < SUPABASE_SERVERS.length; i++) {
+        try {
+            const supabaseClient = getSupabaseClient(i);
+            
+            const { data, error } = await supabaseClient
+                .from('used_invite_codes')
+                .select('*')
+                .eq('code', code)
+                .order('used_at', { ascending: false })
+                .limit(20);
+            
+            if (!error && data) {
+                allCodes.push(...data);
+            }
+        } catch (error) {
+            continue;
+        }
+    }
+    
+    // Remove duplicates
+    const uniqueCodes = [];
+    const seenIds = new Set();
+    
+    allCodes.forEach(code => {
+        if (!seenIds.has(code.used_by_user_id)) {
+            seenIds.add(code.used_by_user_id);
+            uniqueCodes.push(code);
+        }
+    });
+    
+    return uniqueCodes;
+}
+
+// 20. Format Time Ago
+function formatTimeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMins < 60) {
+        return `${diffMins} မိနစ်အကြာက`;
+    } else if (diffHours < 24) {
+        return `${diffHours} နာရီအကြာက`;
+    } else {
+        return `${diffDays} ရက်အကြာက`;
+    }
+}
+
+// 21. Update User Crystals Display
+function updateUserCrystals() {
+    const userData = JSON.parse(localStorage.getItem('gameUserData') || '{}');
+    const crystalElement = document.getElementById('crystal-count');
+    if (crystalElement && userData.crystals !== undefined) {
+        crystalElement.textContent = userData.crystals;
+    }
+}
+
+// 22. Show Message
+function showInviteMessage(message, type) {
+    const existingMsg = document.querySelector('.invite-message');
+    if (existingMsg) existingMsg.remove();
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `invite-message ${type}-message`;
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-weight: 500;
+        z-index: 2000;
+        animation: fadeInOut 3s ease;
+        backdrop-filter: blur(10px);
+        min-width: 250px;
+        text-align: center;
+        ${type === 'success' ? 
+            'background: rgba(76, 175, 80, 0.9); color: white; border: 2px solid rgba(76, 175, 80, 0.5);' : 
+            'background: rgba(244, 67, 54, 0.9); color: white; border: 2px solid rgba(244, 67, 54, 0.5);'}
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    setTimeout(() => {
+        if (messageDiv.parentNode) messageDiv.remove();
+        if (style.parentNode) style.remove();
+    }, 3000);
+}
+
+// 23. Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        initializeInviteSystem();
+    }, 2000);
+});
+
 
 </script>
 </body>
