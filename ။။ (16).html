@@ -9117,7 +9117,7 @@ function createInviteScreenHTML() {
             
             <div class="invite-header">
                 <h2>Invite System</h2>
-                <p>Code တစ်ခုသာထည့်ခွင့်ရှိပါသည်</p>
+                <p>Code တစ်ခါသာထည့်ခွင့်ရှိပါသည်</p>
             </div>
             
             <!-- Get Code Button Section -->
@@ -9127,19 +9127,19 @@ function createInviteScreenHTML() {
                 </button>
                 <div class="code-note">
                     Code ရယူပြီးရင် သူငယ်ချင်းများကိုပေးပါ<br>
-                    သူတို့ထည့်တိုင်း သင့်အတွက်လည်း Crystal 1 ရမည်
+                    သူတို့ထည့်တိုင်း သင့်အတွက် Crystal 1 ရမည်
                 </div>
             </div>
             
             <!-- My Code Section -->
             <div class="my-code-section" id="my-code-section" style="display:none;">
-                <div class="section-title">ကျွန်တော့် Code</div>
+                <div class="section-title">My Code</div>
                 <div class="single-code-display" id="single-code-display">
                     <span class="code-text" id="my-code-text">Loading...</span>
                 </div>
                 <div class="code-info">
                     ဒီ Code ကိုသူငယ်ချင်းများကိုပေးပါ<br>
-                    သူတို့ထည့်တဲ့အခါ သင့်အတွက်လည်း Crystal 1 ရမည်
+                    သူတို့ထည့်တဲ့အခါ သင့်အတွက် Crystal 1 ရမည်
                 </div>
                 
                 <button class="share-telegram-btn" id="share-telegram-btn">
@@ -9160,7 +9160,7 @@ function createInviteScreenHTML() {
                     </button>
                 </div>
                 <div class="code-note">
-                    Code တစ်ခုကိုတစ်ခါသာထည့်လို့ရပါသည်<br>
+                    Code ကိုတစ်ခါသာထည့်လို့ရပါသည်<br>
                     သင့်သူငယ်ချင်းများကိုအကူညီတောင်းပါ
                 </div>
             </div>
@@ -9810,7 +9810,7 @@ async function submitFriendCode() {
         localStorage.setItem('gameUserData', JSON.stringify(userData));
         
         // Success message
-        showInviteMessage('Crystal 1 ရရှိပါသည်! သင့်သူငယ်ချင်းများကိုကျေးဇူးတင်ပါတယ်။', 'success');
+        showInviteMessage('သင့်သူငယ်ချင် Crystal 1 ရရှိပါသည်! သင့်သူငယ်ချင်းကျေးဇူးတင်ပါတယ်။', 'success');
         
         // Clear input
         codeInput.value = '';
@@ -9929,13 +9929,13 @@ async function loadUsedCodes() {
     }
     
     usedSection.style.display = 'block';
-    usedList.innerHTML = '<div class="loading-codes">လာရောက်သူများကိုစစ်ဆေးနေသည်...</div>';
+    usedList.innerHTML = '<div class="loading-codes">Code အသုံးပြုသူများကိုစစ်ဆေးနေသည်...</div>';
     
     try {
         const usedCodes = await getUsedCodesForUser(userData.inviteCode);
         
         if (usedCodes.length === 0) {
-            usedList.innerHTML = '<div class="no-codes">လာရောက်သောသူမရှိသေးပါ</div>';
+            usedList.innerHTML = '<div class="no-codes">Code အသုံးပြုသူမရှိသေးပါ</div>';
             return;
         }
         
@@ -9961,7 +9961,7 @@ async function loadUsedCodes() {
         usedList.innerHTML = html;
         
     } catch (error) {
-        usedList.innerHTML = '<div class="no-codes">လာရောက်သူများကိုမတွေ့ပါ</div>';
+        usedList.innerHTML = '<div class="no-codes">Code အသုံးပြုသူများကိုမတွေ့ပါ</div>';
     }
 }
 
