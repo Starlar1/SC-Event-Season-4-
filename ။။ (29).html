@@ -665,19 +665,33 @@ body{
     }
 }
 
-/* ===== Event Button (Gold Animated) ===== */
+/* ===== Event Button (Color Animation Only) ===== */
 .event-new-btn{
-    background: linear-gradient(135deg,#FFD700,#ffb300);
+    background: linear-gradient(270deg,#FFD700,#ffb300,#FFD700);
+    background-size:300% 300%;
     color:#000;
     font-weight:700;
-    box-shadow:0 0 12px gold;
-    animation: goldPulse 1.5s infinite;
+
+    animation: goldFlow 3s linear infinite;
+    box-shadow:0 0 8px rgba(255,215,0,0.6);
 }
 
-@keyframes goldPulse{
-    0%{ box-shadow:0 0 5px gold; transform:scale(1);}
-    50%{ box-shadow:0 0 25px gold; transform:scale(1.05);}
-    100%{ box-shadow:0 0 5px gold; transform:scale(1);}
+/* ❌ transform မသုံးဘူး */
+/* ✅ color + glow only */
+
+@keyframes goldFlow{
+    0%{
+        background-position:0% 50%;
+        box-shadow:0 0 6px gold;
+    }
+    50%{
+        background-position:100% 50%;
+        box-shadow:0 0 18px gold;
+    }
+    100%{
+        background-position:0% 50%;
+        box-shadow:0 0 6px gold;
+    }
 }
 
 
@@ -719,49 +733,75 @@ body{
     border-radius:20px;
 }
 
-/* List */
+/* ===== Events List Scroll Fix ===== */
 .events-list{
     position:absolute;
     top:80px;
+    bottom:20px;          /* ✅ အဆုံးထိ scroll */
     width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:25px;
-    align-items:center;
     overflow-y:auto;
-    padding-bottom:60px;
+    padding:20px;
+    
+    display:grid;         /* ✅ grid layout */
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:18px;
 }
 
-/* Card */
+
+/* ===== Card Box (လှတဲ့အကွက်) ===== */
 .event-card{
     position:relative;
+    padding:10px;
+    border-radius:18px;
+
+    background:rgba(255,255,255,0.08);   /* glass */
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    transition:0.25s;
 }
 
+.event-card:hover{
+    transform:translateY(-4px) scale(1.03);
+}
+
+
+/* ===== Image inside card ===== */
 .event-card img{
-    width:auto;          /* ✅ original size */
+    width:100%;
     height:auto;
-    max-width:90vw;
+    border-radius:14px;
+    display:block;
 }
 
-/* Tags */
+
+/* ===== Tag (Right + Black BG) ===== */
 .tag{
     position:absolute;
     top:8px;
-    left:8px;
+    right:8px;   /* ✅ ဘယ်ကနေညာဘက်ပြောင်း */
+    
+    background:#000;   /* ✅ အမဲ background */
+    color:#fff;
+
     padding:4px 10px;
     border-radius:8px;
-    font-size:13px;
+    font-size:12px;
     font-weight:bold;
+    letter-spacing:0.5px;
 }
 
+
+/* FREE / VIP text color only */
 .free-tag{
-    background:#00e676;
-    color:#000;
+    border:1px solid #00e676;
+    color:#00e676;
 }
 
 .vip-tag{
-    background:gold;
-    color:#000;
+    border:1px solid gold;
+    color:gold;
 }
 
 
