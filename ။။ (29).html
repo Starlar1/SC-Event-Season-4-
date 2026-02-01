@@ -665,357 +665,108 @@ body{
     }
 }
 
-
-
-
-/* ===== GOLD ANIMATED EVENTS BUTTON ===== */
-.events-btn {
-    background: linear-gradient(145deg, #FFD700, #FFA500) !important;
-    color: #8B4513 !important;
-    font-weight: bold !important;
-    border: 2px solid #FFA500 !important;
-    box-shadow: 
-        0 0 15px rgba(255, 215, 0, 0.6),
-        0 5px 15px rgba(0, 0, 0, 0.3) !important;
-    animation: goldPulse 2s infinite ease-in-out !important;
-    position: relative;
-    overflow: hidden;
+/* ===== Event Button (Gold Animated) ===== */
+.event-new-btn{
+    background: linear-gradient(135deg,#FFD700,#ffb300);
+    color:#000;
+    font-weight:700;
+    box-shadow:0 0 12px gold;
+    animation: goldPulse 1.5s infinite;
 }
 
-.events-btn::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        to bottom right,
-        rgba(255, 255, 255, 0.3) 0%,
-        rgba(255, 255, 255, 0) 50%,
-        rgba(255, 255, 255, 0.3) 100%
-    );
-    transform: rotate(30deg);
-    animation: goldShine 3s infinite linear;
+@keyframes goldPulse{
+    0%{ box-shadow:0 0 5px gold; transform:scale(1);}
+    50%{ box-shadow:0 0 25px gold; transform:scale(1.05);}
+    100%{ box-shadow:0 0 5px gold; transform:scale(1);}
 }
 
-.events-btn:hover {
-    background: linear-gradient(145deg, #FFEC8B, #FFA500) !important;
-    transform: translateX(-5px) scale(1.05) !important;
-    box-shadow: 
-        0 0 25px rgba(255, 215, 0, 0.8),
-        0 8px 20px rgba(0, 0, 0, 0.4) !important;
+
+/* ===== Event Screen ===== */
+.events-screen{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1200;
 }
 
-@keyframes goldPulse {
-    0%, 100% {
-        box-shadow: 
-            0 0 15px rgba(255, 215, 0, 0.6),
-            0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    50% {
-        box-shadow: 
-            0 0 25px rgba(255, 215, 0, 0.8),
-            0 8px 20px rgba(0, 0, 0, 0.4);
-    }
+/* Animated Blue Background */
+.events-bg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(45deg,#0d47a1,#1565c0,#1e88e5,#0d47a1);
+    background-size:300% 300%;
+    animation:bgMove 8s infinite linear;
 }
 
-@keyframes goldShine {
-    0% {
-        transform: rotate(30deg) translateX(-100%);
-    }
-    100% {
-        transform: rotate(30deg) translateX(100%);
-    }
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
-/* ===== EVENTS SCREEN STYLES ===== */
-.events-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1000;
-    display: none;
-    overflow-y: auto;
-    overscroll-behavior: none; /* Prevent pull-to-refresh */
+/* Back button */
+.events-back{
+    position:absolute;
+    top:20px;
+    left:20px;
+    padding:10px 22px;
+    background:#1976d2;
+    color:#fff;
+    border:none;
+    border-radius:20px;
 }
 
-.events-background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        135deg,
-        #1e3c72 0%,
-        #2a5298 25%,
-        #1c3f8a 50%,
-        #2a5298 75%,
-        #1e3c72 100%
-    );
-    background-size: 400% 400%;
-    animation: gradientFlow 10s ease infinite;
+/* List */
+.events-list{
+    position:absolute;
+    top:80px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+    align-items:center;
+    overflow-y:auto;
+    padding-bottom:60px;
 }
 
-@keyframes gradientFlow {
-    0% { background-position: 0% 50% }
-    50% { background-position: 100% 50% }
-    100% { background-position: 0% 50% }
+/* Card */
+.event-card{
+    position:relative;
 }
 
-/* Animated Particles */
-.events-particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+.event-card img{
+    width:auto;          /* ✅ original size */
+    height:auto;
+    max-width:90vw;
 }
 
-.particle {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    animation: floatParticle 20s infinite linear;
+/* Tags */
+.tag{
+    position:absolute;
+    top:8px;
+    left:8px;
+    padding:4px 10px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:bold;
 }
 
-@keyframes floatParticle {
-    0% {
-        transform: translateY(100vh) translateX(0) rotate(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.3;
-    }
-    90% {
-        opacity: 0.3;
-    }
-    100% {
-        transform: translateY(-100px) translateX(100px) rotate(360deg);
-        opacity: 0;
-    }
+.free-tag{
+    background:#00e676;
+    color:#000;
 }
 
-/* Events Content */
-.events-content {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    touch-action: pan-y; /* Allow vertical scrolling only */
+.vip-tag{
+    background:gold;
+    color:#000;
 }
 
-/* Back Button */
-.events-back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    z-index: 10;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
 
-.events-back-btn:hover {
-    background: rgba(0, 0, 0, 0.8);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-}
 
-/* Events Header */
-.events-header {
-    text-align: center;
-    padding: 80px 20px 40px;
-    margin-top: 20px;
-}
-
-.events-title {
-    color: white;
-    font-size: 42px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-shadow: 
-        0 2px 10px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(255, 215, 0, 0.5);
-    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 3s linear infinite;
-}
-
-@keyframes shine {
-    to {
-        background-position: 200% center;
-    }
-}
-
-/* Events Grid Container */
-.events-grid-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    width: 100%;
-    max-width: 1800px;
-    margin: 0 auto;
-    touch-action: pan-y; /* Prevent horizontal scroll */
-}
-
-/* Events Grid - Horizontal Layout */
-.events-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 25px;
-    width: 100%;
-}
-
-/* Event Card - WIDER FORMAT */
-.event-card {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(15px);
-    border-radius: 15px;
-    overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    touch-action: none; /* Prevent dragging */
-}
-
-/* Image Container - Fixed aspect ratio, NO drag */
-.event-image-container {
-    width: 100%;
-    height: 280px;
-    overflow: hidden;
-    position: relative;
-    -webkit-user-drag: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: none;
-}
-
-.event-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Show full image without cropping */
-    display: block;
-    -webkit-user-drag: none;
-    user-select: none;
-    -webkit-user-select: none;
-    pointer-events: none;
-}
-
-/* Badge - TOP RIGHT CORNER */
-.event-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    z-index: 2;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    border: 2px solid;
-    background: rgba(0, 0, 0, 0.8);
-}
-
-.badge-free {
-    color: #4CAF50;
-    border-color: #4CAF50;
-}
-
-.badge-vip {
-    color: #FFD700;
-    border-color: #FFD700;
-}
-
-/* Card Info */
-.event-info {
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Responsive */
-@media (max-width: 1200px) {
-    .events-grid {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 20px;
-    }
     
-    .event-image-container {
-        height: 250px;
-    }
-}
-
-@media (max-width: 768px) {
-    .events-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 15px;
-    }
-    
-    .events-header {
-        padding: 60px 15px 30px;
-    }
-    
-    .events-title {
-        font-size: 32px;
-    }
-    
-    .event-image-container {
-        height: 220px;
-    }
-    
-    .events-back-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-    
-    .event-badge {
-        padding: 6px 15px;
-        font-size: 12px;
-        top: 10px;
-        right: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .events-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    
-    .events-title {
-        font-size: 28px;
-    }
-    
-    .event-image-container {
-        height: 200px;
-    }
-}
-    
-    
-
 
     
 
@@ -1095,79 +846,26 @@ body{
     </button>
 </div>
 
-<!-- Events Screen -->
-<div class="events-screen" id="events-screen">
-    <div class="events-background"></div>
-    
-    <!-- Animated Particles -->
-    <div class="events-particles" id="events-particles"></div>
-    
-    <div class="events-content">
-        <!-- Back Button -->
-        <button class="events-back-btn" id="events-back-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-            </svg>
-            Back
-        </button>
-        
-        <!-- Header -->
-        <div class="events-header">
-            <h1 class="events-title">Event များ</h1>
+<div class="events-screen" id="events-screen" style="display:none;">
+    <div class="events-bg"></div>
+
+    <button class="events-back" id="events-back">← Back</button>
+
+    <div class="events-list">
+
+        <!-- FREE -->
+        <div class="event-card free">
+            <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png">
+            <span class="tag free-tag">FREE</span>
         </div>
-        
-        <!-- Events Grid Container -->
-        <div class="events-grid-container">
-            <div class="events-grid">
-                <!-- Event 1 - Free -->
-                <div class="event-card">
-                    <div class="event-badge badge-free">Free</div>
-                    <div class="event-image-container">
-                        <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image" draggable="false">
-                    </div>
-                </div>
-                
-                <!-- Event 2 - VIP -->
-                <div class="event-card">
-                    <div class="event-badge badge-vip">VIP</div>
-                    <div class="event-image-container">
-                        <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image" draggable="false">
-                    </div>
-                </div>
-                
-                <!-- Event 3 - VIP -->
-                <div class="event-card">
-                    <div class="event-badge badge-vip">VIP</div>
-                    <div class="event-image-container">
-                        <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image" draggable="false">
-                    </div>
-                </div>
-                
-                <!-- Event 4 - VIP -->
-                <div class="event-card">
-                    <div class="event-badge badge-vip">VIP</div>
-                    <div class="event-image-container">
-                        <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image" draggable="false">
-                    </div>
-                </div>
-                
-                <!-- Event 5 - VIP -->
-                <div class="event-card">
-                    <div class="event-badge badge-vip">VIP</div>
-                    <div class="event-image-container">
-                        <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image" draggable="false">
-                    </div>
-                </div>
-                
-                <!-- Event 6 - VIP -->
-                <div class="event-card">
-                    <div class="event-badge badge-vip">VIP</div>
-                    <div class="event-image-container">
-                        <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image" draggable="false">
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <!-- VIPs -->
+        <div class="event-card vip"><img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png"><span class="tag vip-tag">VIP</span></div>
+        <div class="event-card vip"><img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png"><span class="tag vip-tag">VIP</span></div>
+        <div class="event-card vip"><img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png"><span class="tag vip-tag">VIP</span></div>
+        <div class="event-card vip"><img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png"><span class="tag vip-tag">VIP</span></div>
+        <div class="event-card vip"><img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png"><span class="tag vip-tag">VIP</span></div>
+
     </div>
 </div>
 
@@ -1226,7 +924,7 @@ body{
                 <button class="sidebar-btn" id="battle-btn">
                     <span>Token Box</span>
                 </button>
-       <button class="sidebar-btn events-btn" id="events-btn">
+       <button class="sidebar-btn event-new-btn" id="events-screen-btn">
     <span>Event များ</span>
 </button>
         
@@ -11761,162 +11459,20 @@ window.showCrystalShopScreen = showCrystalShopScreen;
 
 
 
-// Events System
-function initializeEventsSystem() {
-    // Create animated particles
-    createParticles();
-    
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Prevent image dragging
-    disableImageDragging();
-}
 
-// Create animated particles for background
-function createParticles() {
-    const particlesContainer = document.getElementById('events-particles');
-    if (!particlesContainer) return;
-    
-    // Clear existing particles
-    particlesContainer.innerHTML = '';
-    
-    // Create 50 particles
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Random size between 2-8px
-        const size = 2 + Math.random() * 6;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Random starting position
-        particle.style.left = `${Math.random() * 100}%`;
-        
-        // Random animation properties
-        const delay = Math.random() * 20;
-        const duration = 15 + Math.random() * 15;
-        particle.style.animationDelay = `${delay}s`;
-        particle.style.animationDuration = `${duration}s`;
-        
-        // Random opacity
-        particle.style.opacity = 0.2 + Math.random() * 0.3;
-        
-        // Random color variation
-        if (Math.random() > 0.7) {
-            particle.style.background = 'rgba(255, 215, 0, 0.2)';
-        }
-        
-        particlesContainer.appendChild(particle);
-    }
-}
+// ===== Event Screen Logic =====
+const eventsBtn = document.getElementById("events-screen-btn");
+const eventsScreen = document.getElementById("events-screen");
+const eventsBack = document.getElementById("events-back");
 
-// Disable image dragging
-function disableImageDragging() {
-    const images = document.querySelectorAll('.event-image');
-    images.forEach(img => {
-        img.setAttribute('draggable', 'false');
-        img.style.userSelect = 'none';
-        img.style.WebkitUserSelect = 'none';
-        img.style.MozUserSelect = 'none';
-        img.style.msUserSelect = 'none';
-        
-        // Prevent drag events
-        img.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        // Prevent context menu
-        img.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
-    });
-}
+eventsBtn.addEventListener("click", () => {
+    document.getElementById("game-container").style.display = "none";
+    eventsScreen.style.display = "block";
+});
 
-// Setup all event listeners
-function setupEventListeners() {
-    // 1. Events button from sidebar
-    const eventsBtn = document.getElementById('events-btn');
-    if (eventsBtn) {
-        eventsBtn.addEventListener('click', showEventsScreen);
-    }
-    
-    // 2. Back button
-    const backBtn = document.getElementById('events-back-btn');
-    if (backBtn) {
-        backBtn.addEventListener('click', hideEventsScreen);
-    }
-    
-    // 3. Prevent pull-to-refresh and background dragging
-    const eventsScreen = document.getElementById('events-screen');
-    if (eventsScreen) {
-        eventsScreen.addEventListener('touchmove', function(e) {
-            // Allow scrolling only in events grid container
-            if (!e.target.closest('.events-grid-container')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-    }
-}
-
-// Show events screen
-function showEventsScreen() {
-    // Hide game container
-    const gameContainer = document.getElementById('game-container');
-    if (gameContainer) {
-        gameContainer.style.display = 'none';
-    }
-    
-    // Show events screen
-    const eventsScreen = document.getElementById('events-screen');
-    if (eventsScreen) {
-        eventsScreen.style.display = 'block';
-        
-        // Refresh particles animation
-        createParticles();
-    }
-    
-    // Close sidebar if open
-    const sidebarButtons = document.getElementById('sidebar-buttons');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    if (sidebarButtons && sidebarButtons.classList.contains('show')) {
-        sidebarButtons.classList.remove('show');
-        if (sidebarToggle) sidebarToggle.classList.remove('active');
-    }
-}
-
-// Hide events screen
-function hideEventsScreen() {
-    // Hide events screen
-    const eventsScreen = document.getElementById('events-screen');
-    if (eventsScreen) {
-        eventsScreen.style.display = 'none';
-    }
-    
-    // Show game container
-    const gameContainer = document.getElementById('game-container');
-    if (gameContainer) {
-        gameContainer.style.display = 'block';
-    }
-}
-
-// Initialize events system when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize after a short delay
-    setTimeout(function() {
-        initializeEventsSystem();
-    }, 500);
-    
-    // Also initialize when game starts
-    const enterBtn = document.getElementById('enter-btn');
-    if (enterBtn) {
-        enterBtn.addEventListener('click', function() {
-            setTimeout(initializeEventsSystem, 1000);
-        });
-    }
+eventsBack.addEventListener("click", () => {
+    eventsScreen.style.display = "none";
+    document.getElementById("game-container").style.display = "block";
 });
 
 
