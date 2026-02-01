@@ -705,20 +705,48 @@ body{
     z-index:1200;
 }
 
-/* Animated Blue Background */
+/* ===== Animated Blue Background ===== */
 .events-bg{
     position:absolute;
     width:100%;
     height:100%;
-    background:linear-gradient(45deg,#0d47a1,#1565c0,#1e88e5,#0d47a1);
+
+    background:
+        radial-gradient(circle at 20% 30%, #42a5f5 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, #1e88e5 0%, transparent 40%),
+        linear-gradient(45deg,#0d47a1,#1565c0,#1e88e5,#0d47a1);
+
     background-size:300% 300%;
-    animation:bgMove 8s infinite linear;
+    animation:bgMove 6s linear infinite;
 }
 
+/* color movement */
 @keyframes bgMove{
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
     100%{background-position:0% 50%;}
+}
+
+
+/* ===== Stars moving ===== */
+.events-bg::after{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+
+    background-image:
+        radial-gradient(white 2px, transparent 2px);
+
+    background-size:40px 40px;
+    opacity:0.15;
+
+    animation:starsMove 18s linear infinite;
+}
+
+@keyframes starsMove{
+    from{ transform:translate(0,0);}
+    to{ transform:translate(-300px,-300px);}
 }
 
 /* Back button */
@@ -748,22 +776,17 @@ body{
 }
 
 
-/* ===== Card Box (လှတဲ့အကွက်) ===== */
+/* ===== Smaller Clean Card ===== */
 .event-card{
     position:relative;
-    padding:10px;
-    border-radius:18px;
 
-    background:rgba(255,255,255,0.08);   /* glass */
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    padding:6px;                 /* ✅ အရင်ထက်သေး */
+    border-radius:14px;
 
-    box-shadow:0 8px 20px rgba(0,0,0,0.4);
-    transition:0.25s;
-}
+    background:rgba(255,255,255,0.05); /* ✅ ပေါ့ */
+    backdrop-filter:blur(6px);
 
-.event-card:hover{
-    transform:translateY(-4px) scale(1.03);
+    box-shadow:0 4px 10px rgba(0,0,0,0.25);
 }
 
 
@@ -805,7 +828,22 @@ body{
 }
 
 
+/* ===== Title ===== */
+.events-title{
+    position:absolute;
+    top:18px;
+    left:0;
+    width:100%;
+    text-align:center;
 
+    font-size:22px;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:1px;
+
+    text-shadow:0 0 10px rgba(255,255,255,0.6);
+    z-index:5;
+    }
     
 
     
@@ -889,8 +927,9 @@ body{
 <div class="events-screen" id="events-screen" style="display:none;">
     <div class="events-bg"></div>
 
-    <button class="events-back" id="events-back">← Back</button>
-
+    <button class="events-back" id="events-back"> Back</button>
+<h2 class="events-title">Event များ</h2>
+    
     <div class="events-list">
 
         <!-- FREE -->
