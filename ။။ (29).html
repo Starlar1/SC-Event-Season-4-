@@ -667,21 +667,68 @@ body{
 
 
 
-    
+/* ===== GOLD ANIMATED EVENTS BUTTON ===== */
 .events-btn {
     background: linear-gradient(145deg, #FFD700, #FFA500) !important;
     color: #8B4513 !important;
     font-weight: bold !important;
     border: 2px solid #FFA500 !important;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6) !important;
-    animation: goldPulse 2s infinite !important;
+    box-shadow: 
+        0 0 15px rgba(255, 215, 0, 0.6),
+        0 5px 15px rgba(0, 0, 0, 0.3) !important;
+    animation: goldPulse 2s infinite ease-in-out !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.events-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 0.3) 100%
+    );
+    transform: rotate(30deg);
+    animation: goldShine 3s infinite linear;
+}
+
+.events-btn:hover {
+    background: linear-gradient(145deg, #FFEC8B, #FFA500) !important;
+    transform: translateX(-5px) scale(1.05) !important;
+    box-shadow: 
+        0 0 25px rgba(255, 215, 0, 0.8),
+        0 8px 20px rgba(0, 0, 0, 0.4) !important;
 }
 
 @keyframes goldPulse {
-    0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
-    50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+    0%, 100% {
+        box-shadow: 
+            0 0 15px rgba(255, 215, 0, 0.6),
+            0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 
+            0 0 25px rgba(255, 215, 0, 0.8),
+            0 8px 20px rgba(0, 0, 0, 0.4);
+    }
 }
 
+@keyframes goldShine {
+    0% {
+        transform: rotate(30deg) translateX(-100%);
+    }
+    100% {
+        transform: rotate(30deg) translateX(100%);
+    }
+}
+
+/* ===== EVENTS SCREEN STYLES ===== */
 .events-screen {
     position: fixed;
     top: 0;
@@ -690,14 +737,23 @@ body{
     height: 100vh;
     z-index: 1000;
     display: none;
+    overflow-y: auto;
 }
 
 .events-background {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #1e3c72, #2a5298, #1c3f8a);
-    animation: gradientFlow 15s infinite;
+    background: linear-gradient(
+        135deg,
+        #1e3c72 0%,
+        #2a5298 25%,
+        #1c3f8a 50%,
+        #2a5298 75%,
+        #1e3c72 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientFlow 10s ease infinite;
 }
 
 @keyframes gradientFlow {
@@ -706,6 +762,7 @@ body{
     100% { background-position: 0% 50% }
 }
 
+/* Animated Particles */
 .events-particles {
     position: absolute;
     width: 100%;
@@ -717,28 +774,42 @@ body{
     position: absolute;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    animation: floatParticle 15s infinite linear;
+    animation: floatParticle 20s infinite linear;
 }
 
 @keyframes floatParticle {
-    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.5; }
-    90% { opacity: 0.5; }
-    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.3;
+    }
+    90% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100px) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
 }
 
+/* Events Content */
 .events-content {
     position: relative;
     width: 100%;
-    min-height: 100%;
+    min-height: 100vh;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
+/* Back Button */
 .events-back-btn {
     position: fixed;
     top: 20px;
     left: 20px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     color: white;
     border: none;
     padding: 12px 24px;
@@ -748,78 +819,174 @@ body{
     cursor: pointer;
     z-index: 10;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+.events-back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Events Header */
 .events-header {
     text-align: center;
-    padding: 60px 20px 30px;
+    padding: 80px 20px 40px;
+    margin-top: 20px;
 }
 
 .events-title {
     color: white;
-    font-size: 36px;
+    font-size: 42px;
     font-weight: bold;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+    text-shadow: 
+        0 2px 10px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(255, 215, 0, 0.5);
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
 }
 
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* Events Grid */
 .events-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    max-width: 1200px;
+    gap: 30px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
+    width: 100%;
+    flex: 1;
 }
 
+/* Event Card */
 .event-card {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
     cursor: pointer;
+    position: relative;
 }
 
+.event-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    border-color: rgba(255, 215, 0, 0.4);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 215, 0, 0.3);
+}
+
+/* Badge */
 .event-badge {
     position: absolute;
-    top: 15px;
-    left: 15px;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 14px;
+    top: 20px;
+    left: 20px;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-size: 16px;
     font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     z-index: 2;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid;
 }
 
 .badge-free {
     background: linear-gradient(135deg, #4CAF50, #2E7D32);
     color: white;
+    border-color: rgba(76, 175, 80, 0.4);
 }
 
 .badge-vip {
     background: linear-gradient(135deg, #FFD700, #FFA500);
     color: #8B4513;
+    border-color: rgba(255, 215, 0, 0.4);
 }
 
+/* Event Image */
 .event-image-container {
     width: 100%;
-    height: 200px;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
 }
 
 .event-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.6s ease;
 }
 
+.event-card:hover .event-image {
+    transform: scale(1.1);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .events-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 15px;
+    }
+    
+    .events-header {
+        padding: 60px 15px 30px;
+    }
+    
+    .events-title {
+        font-size: 32px;
+    }
+    
+    .event-image-container {
+        height: 200px;
+    }
+    
+    .events-back-btn {
+        padding: 10px 20px;
+        font-size: 14px;
     }
 }
 
+@media (max-width: 480px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .events-title {
+        font-size: 28px;
+    }
+    
+    .event-badge {
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+}
 
+    
+
+    
+    
     
 
 
@@ -894,6 +1061,85 @@ body{
     </button>
 </div>
 
+<!-- Events Screen -->
+<div class="events-screen" id="events-screen">
+    <div class="events-background"></div>
+    
+    <!-- Animated Particles -->
+    <div class="events-particles" id="events-particles"></div>
+    
+    <div class="events-content">
+        <!-- Back Button -->
+        <button class="events-back-btn" id="events-back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+            Back
+        </button>
+        
+        <!-- Header -->
+        <div class="events-header">
+            <h1 class="events-title">Event များ</h1>
+        </div>
+        
+        <!-- Events Grid -->
+        <div class="events-grid">
+            <!-- Event 1 - Free -->
+            <div class="event-card" data-type="free">
+                <div class="event-badge badge-free">Free</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <!-- Event 2 - VIP -->
+            <div class="event-card" data-type="vip">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <!-- Event 3 - VIP -->
+            <div class="event-card" data-type="vip">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <!-- Event 4 - VIP -->
+            <div class="event-card" data-type="vip">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <!-- Event 5 - VIP -->
+            <div class="event-card" data-type="vip">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <!-- Event 6 - VIP -->
+            <div class="event-card" data-type="vip">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    
 <div class="game-container" id="game-container" style="display:none;">
 
 <div class="game-container">
@@ -920,68 +1166,7 @@ body{
             </div>
         </div>
 
-<div class="events-screen" id="events-screen" style="display:none;">
-    <div class="events-background"></div>
-    
-    <div class="events-particles" id="events-particles"></div>
-    
-    <div class="events-content">
-        <button class="events-back-btn" id="events-back-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-            </svg>
-            Back
-        </button>
-        
-        <div class="events-header">
-            <h1 class="events-title">Event များ</h1>
-        </div>
-        
-        <div class="events-grid">
-            <div class="event-card">
-                <div class="event-badge badge-free">Free</div>
-                <div class="event-image-container">
-                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
-                </div>
-            </div>
-            
-            <div class="event-card">
-                <div class="event-badge badge-vip">VIP</div>
-                <div class="event-image-container">
-                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
-                </div>
-            </div>
-            
-            <div class="event-card">
-                <div class="event-badge badge-vip">VIP</div>
-                <div class="event-image-container">
-                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
-                </div>
-            </div>
-            
-            <div class="event-card">
-                <div class="event-badge badge-vip">VIP</div>
-                <div class="event-image-container">
-                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
-                </div>
-            </div>
-            
-            <div class="event-card">
-                <div class="event-badge badge-vip">VIP</div>
-                <div class="event-image-container">
-                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
-                </div>
-            </div>
-            
-            <div class="event-card">
-                <div class="event-badge badge-vip">VIP</div>
-                <div class="event-image-container">
-                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
         
 
@@ -11540,72 +11725,161 @@ document.addEventListener('DOMContentLoaded', function() {
 window.showCrystalShopScreen = showCrystalShopScreen;
 
 
+// Events System
 function initializeEventsSystem() {
+    // Create animated particles
     createParticles();
-    setupEventsEvents();
+    
+    // Setup event listeners
+    setupEventListeners();
 }
 
+// Create animated particles for background
 function createParticles() {
-    const container = document.getElementById('events-particles');
-    if (!container) return;
+    const particlesContainer = document.getElementById('events-particles');
+    if (!particlesContainer) return;
     
-    for (let i = 0; i < 50; i++) {
+    // Clear existing particles
+    particlesContainer.innerHTML = '';
+    
+    // Create 60 particles for better effect
+    for (let i = 0; i < 60; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
-        const size = 2 + Math.random() * 4;
+        
+        // Random size between 2-8px
+        const size = 2 + Math.random() * 6;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
+        
+        // Random starting position
         particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 15}s`;
-        particle.style.animationDuration = `${10 + Math.random() * 10}s`;
-        container.appendChild(particle);
+        
+        // Random animation properties
+        const delay = Math.random() * 20;
+        const duration = 15 + Math.random() * 15;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        
+        // Random opacity
+        particle.style.opacity = 0.2 + Math.random() * 0.3;
+        
+        // Random color variation
+        if (Math.random() > 0.7) {
+            particle.style.background = 'rgba(255, 215, 0, 0.2)';
+        }
+        
+        particlesContainer.appendChild(particle);
     }
 }
 
-function setupEventsEvents() {
+// Setup all event listeners
+function setupEventListeners() {
+    // 1. Events button from sidebar
     const eventsBtn = document.getElementById('events-btn');
-    const backBtn = document.getElementById('events-back-btn');
-    
     if (eventsBtn) {
         eventsBtn.addEventListener('click', showEventsScreen);
     }
     
+    // 2. Back button
+    const backBtn = document.getElementById('events-back-btn');
     if (backBtn) {
         backBtn.addEventListener('click', hideEventsScreen);
     }
     
+    // 3. Event cards click
     const eventCards = document.querySelectorAll('.event-card');
     eventCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const badge = card.querySelector('.event-badge');
-            const isVip = badge.classList.contains('badge-vip');
-            alert(isVip ? 'VIP Event' : 'Free Event');
+        card.addEventListener('click', function() {
+            const isVip = this.getAttribute('data-type') === 'vip';
+            
+            if (isVip) {
+                alert('VIP Event - This requires VIP access');
+            } else {
+                alert('Free Event - Enjoy!');
+            }
         });
     });
-}
-
-function showEventsScreen() {
-    const gameContainer = document.getElementById('game-container');
-    const eventsScreen = document.getElementById('events-screen');
     
-    if (gameContainer) gameContainer.style.display = 'none';
+    // 4. Close events screen when clicking outside content
+    const eventsScreen = document.getElementById('events-screen');
     if (eventsScreen) {
-        eventsScreen.style.display = 'block';
-        createParticles();
+        eventsScreen.addEventListener('click', function(e) {
+            if (e.target === eventsScreen) {
+                hideEventsScreen();
+            }
+        });
     }
 }
 
-function hideEventsScreen() {
-    const eventsScreen = document.getElementById('events-screen');
-    const gameContainer = document.getElementById('game-container');
+// Show events screen
+function showEventsScreen() {
+    console.log('Showing events screen...');
     
-    if (eventsScreen) eventsScreen.style.display = 'none';
-    if (gameContainer) gameContainer.style.display = 'block';
+    // Hide game container
+    const gameContainer = document.getElementById('game-container');
+    if (gameContainer) {
+        gameContainer.style.display = 'none';
+    }
+    
+    // Show events screen
+    const eventsScreen = document.getElementById('events-screen');
+    if (eventsScreen) {
+        eventsScreen.style.display = 'block';
+        
+        // Refresh particles animation
+        createParticles();
+    }
+    
+    // Close sidebar if open
+    const sidebarButtons = document.getElementById('sidebar-buttons');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    if (sidebarButtons && sidebarButtons.classList.contains('show')) {
+        sidebarButtons.classList.remove('show');
+        if (sidebarToggle) sidebarToggle.classList.remove('active');
+    }
 }
 
+// Hide events screen
+function hideEventsScreen() {
+    console.log('Hiding events screen...');
+    
+    // Hide events screen
+    const eventsScreen = document.getElementById('events-screen');
+    if (eventsScreen) {
+        eventsScreen.style.display = 'none';
+    }
+    
+    // Show game container
+    const gameContainer = document.getElementById('game-container');
+    if (gameContainer) {
+        gameContainer.style.display = 'block';
+    }
+}
+
+// Initialize events system when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initializeEventsSystem, 100);
+    console.log('Initializing Events System...');
+    
+    // Initialize after a short delay
+    setTimeout(function() {
+        initializeEventsSystem();
+        console.log('Events System initialized!');
+    }, 500);
+    
+    // Also initialize when game starts
+    const enterBtn = document.getElementById('enter-btn');
+    if (enterBtn) {
+        enterBtn.addEventListener('click', function() {
+            setTimeout(initializeEventsSystem, 1000);
+        });
+    }
 });
+
+// Make functions globally available for testing
+window.showEventsScreen = showEventsScreen;
+window.hideEventsScreen = hideEventsScreen;
+
 
     
 
