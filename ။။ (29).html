@@ -708,8 +708,12 @@ body{
 /* ===== Animated Blue Background ===== */
 .events-bg{
     position:absolute;
+    top:0;
+    left:0;
     width:100%;
     height:100%;
+
+    pointer-events:none;   /* ⭐ Back button ကို မဖုံးစေဖို့ IMPORTANT */
 
     background:
         radial-gradient(circle at 20% 30%, #42a5f5 0%, transparent 40%),
@@ -718,13 +722,6 @@ body{
 
     background-size:300% 300%;
     animation:bgMove 6s linear infinite;
-}
-
-/* color movement */
-@keyframes bgMove{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
 }
 
 
@@ -759,6 +756,8 @@ body{
     color:#fff;
     border:none;
     border-radius:20px;
+
+    z-index:10;      /* ⭐ ဒီဟာထည့် (important) */
 }
 
 /* ===== Events List Scroll Fix ===== */
@@ -927,7 +926,7 @@ body{
 <div class="events-screen" id="events-screen" style="display:none;">
     <div class="events-bg"></div>
 
-<button class="events-back" id="events-back">← Back</button>
+<button class="events-back" id="events-back">Back</button>
 <h2 class="events-title">Event များ</h2>
 <div class="events-list">
 
