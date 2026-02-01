@@ -664,6 +664,166 @@ body{
         height: 16px;
     }
 }
+
+
+
+    
+.events-btn {
+    background: linear-gradient(145deg, #FFD700, #FFA500) !important;
+    color: #8B4513 !important;
+    font-weight: bold !important;
+    border: 2px solid #FFA500 !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6) !important;
+    animation: goldPulse 2s infinite !important;
+}
+
+@keyframes goldPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+    50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+}
+
+.events-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: none;
+}
+
+.events-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e3c72, #2a5298, #1c3f8a);
+    animation: gradientFlow 15s infinite;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+}
+
+.events-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: floatParticle 15s infinite linear;
+}
+
+@keyframes floatParticle {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+.events-content {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+}
+
+.events-back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.events-header {
+    text-align: center;
+    padding: 60px 20px 30px;
+}
+
+.events-title {
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.event-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+}
+
+.event-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.badge-free {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+}
+
+.badge-vip {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #8B4513;
+}
+
+.event-image-container {
+    width: 100%;
+    height: 200px;
+}
+
+.event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+    
+
+
+    
 </style>
 </head>
 <body>
@@ -760,6 +920,71 @@ body{
             </div>
         </div>
 
+<div class="events-screen" id="events-screen" style="display:none;">
+    <div class="events-background"></div>
+    
+    <div class="events-particles" id="events-particles"></div>
+    
+    <div class="events-content">
+        <button class="events-back-btn" id="events-back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+            Back
+        </button>
+        
+        <div class="events-header">
+            <h1 class="events-title">Event များ</h1>
+        </div>
+        
+        <div class="events-grid">
+            <div class="event-card">
+                <div class="event-badge badge-free">Free</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <div class="event-card">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <div class="event-card">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <div class="event-card">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <div class="event-card">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+            
+            <div class="event-card">
+                <div class="event-badge badge-vip">VIP</div>
+                <div class="event-image-container">
+                    <img src="https://i.ibb.co/s96NcPqV/Grid-Art-20260128-174606085.png" class="event-image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        
+
         <!-- Sidebar Menu -->
         <div class="sidebar-menu">
             <button class="sidebar-toggle" id="sidebar-toggle">
@@ -780,7 +1005,10 @@ body{
                 <button class="sidebar-btn" id="battle-btn">
                     <span>Token Box</span>
                 </button>
-       
+       <!-- Add this button inside your existing sidebar-buttons div -->
+<button class="sidebar-btn events-btn" id="events-btn">
+    <span>Event များ</span>
+</button>
         
          
             </div>
@@ -11312,7 +11540,74 @@ document.addEventListener('DOMContentLoaded', function() {
 window.showCrystalShopScreen = showCrystalShopScreen;
 
 
+function initializeEventsSystem() {
+    createParticles();
+    setupEventsEvents();
+}
 
+function createParticles() {
+    const container = document.getElementById('events-particles');
+    if (!container) return;
+    
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        const size = 2 + Math.random() * 4;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 15}s`;
+        particle.style.animationDuration = `${10 + Math.random() * 10}s`;
+        container.appendChild(particle);
+    }
+}
+
+function setupEventsEvents() {
+    const eventsBtn = document.getElementById('events-btn');
+    const backBtn = document.getElementById('events-back-btn');
+    
+    if (eventsBtn) {
+        eventsBtn.addEventListener('click', showEventsScreen);
+    }
+    
+    if (backBtn) {
+        backBtn.addEventListener('click', hideEventsScreen);
+    }
+    
+    const eventCards = document.querySelectorAll('.event-card');
+    eventCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const badge = card.querySelector('.event-badge');
+            const isVip = badge.classList.contains('badge-vip');
+            alert(isVip ? 'VIP Event' : 'Free Event');
+        });
+    });
+}
+
+function showEventsScreen() {
+    const gameContainer = document.getElementById('game-container');
+    const eventsScreen = document.getElementById('events-screen');
+    
+    if (gameContainer) gameContainer.style.display = 'none';
+    if (eventsScreen) {
+        eventsScreen.style.display = 'block';
+        createParticles();
+    }
+}
+
+function hideEventsScreen() {
+    const eventsScreen = document.getElementById('events-screen');
+    const gameContainer = document.getElementById('game-container');
+    
+    if (eventsScreen) eventsScreen.style.display = 'none';
+    if (gameContainer) gameContainer.style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initializeEventsSystem, 100);
+});
+
+    
 
 
 
